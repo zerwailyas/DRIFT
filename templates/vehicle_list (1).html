@@ -1,0 +1,77 @@
+{% extends "admin/base.html" %}
+
+{% block title %}{{ title }} | {{ site_title|default:_('Django site admin') }}{% endblock %}
+
+{% block branding %}
+<h1 id="site-name">
+    <a href="{% url 'admin:index' %}">{{ site_header|default:_('Django administration') }}</a>
+</h1>
+{% endblock %}
+
+{% block extrastyle %}
+<style>
+#header {
+    background: #417690;
+    color: white;
+}
+
+#user-tools {
+    float: right;
+    padding: 0;
+    margin: 0 0 0 20px;
+    font-weight: 300;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.admin-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    right: 0;
+    background: white !important;
+    min-width: 160px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    z-index: 1000;
+    border: 1px solid #ddd;
+}
+
+.dropdown-menu a {
+    color: black !important;
+    background: white !important;
+    padding: 8px 12px;
+    display: block;
+    font-size: 13px;
+    text-decoration: none;
+}
+
+.dropdown-menu a:hover {
+    background: #f0f0f0 !important;
+    color: black !important;
+}
+
+.admin-dropdown:hover .dropdown-menu {
+    display: block;
+}
+</style>
+{% endblock %}
+
+{% block usertools %}
+<div id="user-tools">
+    Welcome, <strong>{% firstof user.get_short_name user.get_username %}</strong>.
+    <span class="admin-dropdown">
+        <a href="#" class="dropdown-toggle">View Site ▼</a>
+        <div class="dropdown-menu">
+            <a href="{% url 'admin_vehicle_list' %}">Manage Vehicles</a>
+            <a href="{% url 'admin_user_list' %}">Manage Users</a>
+        </div>
+    </span>
+    | <a href="{% url 'admin:password_change' %}">Change password</a>
+    | <a href="{% url 'admin:logout' %}">Log out</a>
+</div>
+{% endblock %}

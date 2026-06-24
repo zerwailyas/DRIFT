@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>User Management</title>
+    
+    <!-- CSS/JS CDN Imports -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <link rel="icon" href="data:,">
+    
+    <style>
+        body {
+    color: #566787;
+    background: #f5f5f5;
+    font-family: 'Varela Round', sans-serif;
+    font-size: 13px;
+}
+.table-wrapper {
+    background: #fff;
+    padding: 20px 25px;
+    margin: 30px 0;
+    border-radius: 3px;
+    box-shadow: 0 1px 1px rgba(0,0,0,.05);
+}
+.table-title {        
+    padding-bottom: 15px;
+    background: #435d7d;
+    color: #fff;
+    padding: 16px 30px;
+    margin: -20px -25px 10px;
+    border-radius: 3px 3px 0 0;
+}
+.table-title h2 {
+    margin: 5px 0 0;
+    font-size: 24px;
+}
+.table-title .btn-group {
+    float: right;
+}
+.table-title .btn {
+    color: #fff;
+    float: right;
+    font-size: 13px;
+    border: none;
+    min-width: 50px;
+    border-radius: 2px;
+    border: none;
+    outline: none !important;
+    margin-left: 10px;
+}
+.table-title .btn i {
+    float: left;
+    font-size: 21px;
+    margin-right: 5px;
+}
+.table-title .btn span {
+    float: left;
+    margin-top: 2px;
+}
+table.table tr th, table.table tr td {
+    border-color: #e9e9e9;
+    padding: 12px 15px;
+    vertical-align: middle;
+}
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+td, th {
+    padding: 8px;
+    white-space: nowrap;
+}
+table.table tr th:first-child {
+    width: 60px;
+}
+table.table tr th:last-child {
+    width: 100px;
+}
+table.table-striped tbody tr:nth-of-type(odd) {
+    background-color: #fcfcfc;
+}
+table.table-striped.table-hover tbody tr:hover {
+    background: #f5f5f5;
+}
+table.table th i {
+    font-size: 13px;
+    margin: 0 5px;
+    cursor: pointer;
+}	
+table.table td:last-child i {
+    opacity: 0.9;
+    font-size: 22px;
+    margin: 0 5px;
+}
+table.table td a {
+    font-weight: bold;
+    color: #566787;
+    display: inline-block;
+    text-decoration: none;
+    outline: none !important;
+}
+table.table td a:hover {
+    color: #2196F3;
+}
+table.table td a.edit {
+    color: #FFC107;
+}
+table.table td a.delete {
+    color: #F44336;
+}
+table.table td i {
+    font-size: 19px;
+}
+table.table .avatar {
+    border-radius: 50%;
+    vertical-align: middle;
+    margin-right: 10px;
+}
+.pagination {
+    float: right;
+    margin: 0 0 5px;
+}
+.pagination li a {
+    border: none;
+    font-size: 13px;
+    min-width: 30px;
+    min-height: 30px;
+    color: #999;
+    margin: 0 2px;
+    line-height: 30px;
+    border-radius: 2px !important;
+    text-align: center;
+    padding: 0 6px;
+}
+.pagination li a:hover {
+    color: #666;
+}	
+.pagination li.active a, .pagination li.active a.page-link {
+    background: #03A9F4;
+}
+.pagination li.active a:hover {        
+    background: #0397d6;
+}
+.pagination li.disabled i {
+    color: #ccc;
+}
+.pagination li i {
+    font-size: 16px;
+    padding-top: 6px;
+}
+.hint-text {
+    float: left;
+    margin-top: 10px;
+    font-size: 13px;
+}
+.custom-checkbox {
+    position: relative;
+}
+.custom-checkbox input[type="checkbox"] {    
+    opacity: 0;
+    position: absolute;
+    margin: 5px 0 0 3px;
+    z-index: 9;
+}
+.custom-checkbox label:before{
+    width: 18px;
+    height: 18px;
+}
+.custom-checkbox label:before {
+    content: '';
+    margin-right: 10px;
+    display: inline-block;
+    vertical-align: text-top;
+    background: white;
+    border: 1px solid #bbb;
+    border-radius: 2px;
+    box-sizing: border-box;
+    z-index: 2;
+}
+.custom-checkbox input[type="checkbox"]:checked + label:after {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 3px;
+    width: 6px;
+    height: 11px;
+    border: solid #000;
+    border-width: 0 3px 3px 0;
+    transform: inherit;
+    z-index: 3;
+    transform: rotateZ(45deg);
+}
+.custom-checkbox input[type="checkbox"]:checked + label:before {
+    border-color: #03A9F4;
+    background: #03A9F4;
+}
+.custom-checkbox input[type="checkbox"]:checked + label:after {
+    border-color: #fff;
+}
+.custom-checkbox input[type="checkbox"]:disabled + label:before {
+    color: #b8b8b8;
+    cursor: auto;
+    box-shadow: none;
+    background: #ddd;
+}
+.modal .modal-dialog {
+    max-width: 400px;
+}
+.modal .modal-header, .modal .modal-body, .modal .modal-footer {
+    padding: 20px 30px;
+}
+.modal .modal-content {
+    border-radius: 3px;
+}
+.modal .modal-footer {
+    background: #ecf0f1;
+    border-radius: 0 0 3px 3px;
+}
+.modal .modal-title {
+    display: inline-block;
+}
+.modal .form-control {
+    border-radius: 2px;
+    box-shadow: none;
+    border-color: #dddddd;
+}
+.modal textarea.form-control {
+    resize: vertical;
+}
+.modal .btn {
+    border-radius: 2px;
+    min-width: 100px;
+}	
+.modal form label {
+    font-weight: bold;
+}
+.messages {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+.alert {
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    color: white;
+    display: inline-flex;
+    justify-content: space-between;
+    align-items: center;
+    min-width: 300px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+.alert-success {
+    background-color: #4CAF50;
+}
+.alert-error {
+    background-color: #f44336;
+}
+.alert-info {
+    background-color: #2196F3;
+}
+.alert-warning {
+    background-color: #ff9800;
+}
+.close-btn {
+    margin-left: 15px;
+    color: white;
+    font-weight: bold;
+    font-size: 22px;
+    cursor: pointer;
+    background: none;
+    border: none;
+}
+.status-icon {
+    font-size: 18px;
+}
+.status-true {
+    color: #4CAF50;
+}
+.status-false {
+    color: #F44336;
+}
+.search-box {
+    margin-bottom: 20px;
+}
+.user-details-modal .modal-dialog {
+    max-width: 800px;
+    width: 90%;
+}
+.user-details-section {
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eee;
+}
+.user-details-section h4 {
+    color: #435d7d;
+    margin-bottom: 15px;
+}
+.detail-row {
+    display: flex;
+    margin-bottom: 10px;
+}
+.detail-label {
+    font-weight: bold;
+    width: 150px;
+    color: #566787;
+}
+.detail-value {
+    flex: 1;
+}
+.rental-history-table {
+    width: 100%;
+    margin-top: 20px;
+    
+}
+.rental-history-table th {
+    background-color: #356299;
+    color: white;
+    padding: 10px;
+}
+.rental-history-table td {
+    padding: 8px 10px;
+    border-bottom: 1px solid #eee;
+}
+.rental-history-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+.clickable-name {
+    color: #2196F3;
+    cursor: pointer;
+    text-decoration: none;
+}
+.clickable-name:hover {
+    text-decoration: underline;
+}
+.search-bar {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+}
+.search-filter-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    gap: 15px;
+}
+.search-container {
+    position: relative;
+    flex: 1;
+    max-width: 400px;
+}
+.search-container .search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #999;
+    font-size: 16px;
+}
+.search-container .search-bar {
+    width: 100%;
+    padding: 10px 15px 10px 40px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    color: #333;
+    background-color: #fff;
+    transition: all 0.3s;
+}
+.search-container .search-bar:focus {
+    outline: none;
+    border-color: #4b7dbb;
+    box-shadow: 0 0 0 2px rgba(75, 125, 187, 0.2);
+}
+.filter-dropdown {
+    position: relative;
+    min-width: 150px;
+}
+.filter-dropdown i {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #999;
+    font-size: 16px;
+    z-index: 1;
+}
+.filter-dropdown select {
+    width: 100%;
+    padding: 10px 15px 10px 35px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 13px;
+    color: #333;
+    background-color: #fff;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+.filter-dropdown select:focus {
+    outline: none;
+    border-color: #4b7dbb;
+    box-shadow: 0 0 0 2px rgba(75, 125, 187, 0.2);
+}
+.filter-dropdown::after {
+    content: '\f078';
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 800;
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #999;
+    font-size: 12px;
+    pointer-events: none;
+}
+
+/* Bootstrap-inspired additions */
+.badge {
+    display: inline-block;
+    padding: 0.25em 0.4em;
+    font-size: 75%;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 0.25rem;
+}
+.bg-success {
+    background-color: #28a745!important;
+}
+.bg-danger {
+    background-color: #dc3545!important;
+}
+.bg-warning {
+    background-color: #ffc107!important;
+}
+.bg-info {
+    background-color: #17a2b8!important;
+}
+.table-warning {
+    background-color: #fff3cd!important;
+}
+.rental-status-badge {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: bold;
+    margin-left: 8px;
+}
+.rental-active {
+    background-color: #ff9800;
+    color: white;
+}
+.rental-inactive {
+    background-color: #4CAF50;
+    color: white;
+}
+.has-active-rental {
+    background-color: #fff8e1;
+}
+.no-rental-history {
+    color: #757575;
+    font-style: italic;
+}
+.user-controls {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.search-box {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  flex-grow: 1;
+  max-width: 300px;
+}
+
+.filter-dropdown {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.export-btn {
+  padding: 8px 16px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.user-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.user-table th, .user-table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.user-table th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+.status-true {
+  color: #4CAF50;
+}
+
+.action-btn {
+  background: none;
+  border: none;
+  color: #2196F3;
+  cursor: pointer;
+  font-size: 1.1em;
+}
+    </style>
+</head>
+<body>
+    <!-- Flash Messages -->
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+            <span>{{ message }}</span>
+            <button class="close-btn" onclick="this.parentElement.remove()">&times;</button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="container">
+        <div class="table-wrapper">
+            <div class="table-title">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <h2><b>Manage Users</b></h2>
+                    </div>
+                    <div class="col-sm-6">
+                        <a href="#addUserModal" class="btn btn-success" data-toggle="modal">
+                            <i class="material-icons">&#xE147;</i> <span>Add New User</span>
+                        </a>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                                <i class="material-icons">&#xE155;</i> <span>Export</span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="#" id="exportPdfBtn">PDF</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="search-filter-container">
+                <!-- Search Bar (left side) -->
+                <div class="search-container">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" id="searchInput" class="form-control search-bar" placeholder="Search users...">
+                </div>
+
+                <!-- Filter Dropdown (right side) -->
+                <div class="filter-dropdown">
+                    <i class="fas fa-filter"></i>
+                    <select id="filterSelect" class="form-control">
+                        <option value="all">All Users</option>
+                        <option value="is_admin">Admin Only</option>
+                        <option value="is_customer">Customers Only</option>
+                        <option value="is_active">Active Only</option>
+                        <option value="inactive">Inactive Only</option>
+                    </select>
+                </div>
+            </div>
+
+           <table class="table table-hover table-bordered align-middle text-center">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Email</th>
+                        <th>Contact No</th>
+                        <th>Admin</th>
+                        <th>Customer</th>
+                        <th>Active</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="userTable">
+                    {% for user in users %}
+                    <tr class="{% if user.has_active_rental %}has-active-rental{% endif %}">
+                        <td>{{ forloop.counter }}</td>
+                        <td>
+                            <a href="#" class="clickable-name" data-toggle="modal" data-target="#userDetailsModal{{ user.id }}">
+                                {{ user.first_name }} {{ user.last_name }}
+                            </a>
+                        </td>
+                        <td>{{ user.first_name }}</td>
+                        <td>{{ user.last_name }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.phone_number }}</td>
+                        <td>
+                            <i class="status-icon {% if user.is_admin %}status-true{% else %}status-false{% endif %}">&#9679;</i>
+                        </td>
+                        <td>
+                            <i class="status-icon {% if user.is_customer %}status-true{% else %}status-false{% endif %}">&#9679;</i>
+                        </td>
+                        <td>
+                            <i class="status-icon {% if user.is_active %}status-true{% else %}status-false{% endif %}">&#9679;</i>
+                        </td>
+                        <td>
+                            <a href="#editUserModal{{ user.id }}" class="edit" data-toggle="modal">
+                                <i class="material-icons" title="Edit">&#xE254;</i>
+                            </a>
+                            <a href="#deleteUserModal{{ user.id }}" class="delete" data-toggle="modal">
+                                <i class="material-icons" title="Delete">&#xE872;</i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <!-- Add User Modal -->
+            <div id="addUserModal" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <form method="POST" action="{% url 'add_user' %}">
+                            {% csrf_token %}
+                            <div class="modal-header">
+                                <h4 class="modal-title">Add User</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label>Email</label>
+                                    <input type="email" class="form-control" name="email" required>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>First Name</label>
+                                            <input type="text" class="form-control" name="first_name" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Last Name</label>
+                                            <input type="text" class="form-control" name="last_name" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Contact No</label>
+                                    <input type="tel" class="form-control" name="phone_number">
+                                </div>
+                                <div class="form-group">
+                                    <label>Password</label>
+                                    <input type="password" class="form-control" name="password" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Is Admin</label>
+                                    <select class="form-control" name="is_admin">
+                                        <option value="False" selected>No</option>
+                                        <option value="True">Yes</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Is Customer</label>
+                                    <select class="form-control" name="is_customer">
+                                        <option value="True" selected>Yes</option>
+                                        <option value="False">No</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Is Active</label>
+                                    <select class="form-control" name="is_active">
+                                        <option value="True" selected>Yes</option>
+                                        <option value="False">No</option>
+                                    </select>
+                                </div>
+                                <hr>
+                                <h5>Location</h5>
+                                <div class="form-group">
+                                        <label for="pickup_location">Pickup Location</label>
+                                        <input id="pickup_location" type="text" class="form-control" name="pickup_location" placeholder="Enter pickup location" required>
+                                </div>
+
+                                <div class="form-group">
+                                        <label for="dropoff_location">Dropoff Location</label>
+                                        <input id="dropoff_location" type="text" class="form-control" name="dropoff_location" placeholder="Enter dropoff location" required>
+                                </div>
+
+                                <hr>
+                                    <h5>Payment Information</h5>
+
+                                    <div class="form-group">
+                                        <label for="card_number">Card Number</label>
+                                        <input type="text" class="form-control" name="card_number" maxlength="19" required>
+                                    </div>
+
+                                    <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="card_expiry_month">Expiry Month</label>
+                                        <input type="text" class="form-control" name="card_expiry_month" maxlength="2"
+                                            placeholder="MM" required pattern="^(0[1-9]|1[0-2])$" title="Enter month as MM (01-12)">
+                                    </div>
+
+                                    <div class="form-group col-md-6">
+                                            <label for="card_expiry_year">Expiry Year</label>
+                                            <input type="text" class="form-control" name="card_expiry_year" maxlength="2"
+                                                placeholder="YY" required pattern="^\d{2}$" title="Enter year as YY (e.g., 25)">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                        <label for="card_cvv">CVV</label>
+                                        <input type="text" class="form-control" name="card_cvv" maxlength="4" required pattern="^\d{3,4}$"
+                                            title="Enter a 3 or 4-digit CVV">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="account_balance">Account Balance (PKR)</label>
+                                    <input type="text" class="form-control" name="account_balance"
+                                        pattern="^\d+(\.\d{1,2})?$"
+                                        title="Enter amount like 1000 or 1000.50"
+                                        required>
+                                </div>
+
+                            </div>
+                            <div class="modal-footer">
+                                <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                                <input type="submit" class="btn btn-success" value="Add">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            {% for user in users %}
+            <!-- Edit User Modal -->
+            <div id="editUserModal{{ user.id }}" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <form action="{% url 'update_user' user.id %}" method="post">
+                            {% csrf_token %}
+                            <div class="modal-header">
+                                <h4 class="modal-title">Edit User</h4>
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label>First Name</label>
+                                    <input type="text" class="form-control" name="first_name" value="{{ user.first_name }}" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Last Name</label>
+                                    <input type="text" class="form-control" name="last_name" value="{{ user.last_name }}" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Email</label>
+                                    <input type="email" class="form-control" name="email" value="{{ user.email }}" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Phone Number</label>
+                                    <input type="text" class="form-control" name="phone_number" value="{{ user.phone_number }}">
+                                </div>
+                                <div class="form-group">
+                                    <label>Password</label>
+                                    <input type="password" class="form-control" name="password" placeholder="Leave blank to keep current password">
+                                </div>
+                                <div class="form-group">
+                                    <label>Admin Status</label>
+                                    <select name="is_admin" class="form-control">
+                                        <option value="True" {% if user.is_admin %}selected{% endif %}>Yes</option>
+                                        <option value="False" {% if not user.is_admin %}selected{% endif %}>No</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Customer Status</label>
+                                    <select name="is_customer" class="form-control">
+                                        <option value="True" {% if user.is_customer %}selected{% endif %}>Yes</option>
+                                        <option value="False" {% if not user.is_customer %}selected{% endif %}>No</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Active Status</label>
+                                    <select name="is_active" class="form-control">
+                                        <option value="True" {% if user.is_active %}selected{% endif %}>Yes</option>
+                                        <option value="False" {% if not user.is_active %}selected{% endif %}>No</option>
+                                    </select>
+                                </div>
+                                <hr>
+                                <h5>loaction</h5>
+                                <div class="form-group">
+                                    <label for="pickupLocation">Pickup Location</label>
+                                    <input type="text" class="form-control" name="pickup_location" value="{{ rental.pickup_location }}" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="dropoffLocation">Drop-off Location</label>
+                                    <input type="text" class="form-control" name="dropoff_location" value="{{ rental.dropoff_location }}" required>
+                                </div>
+
+
+                               <hr>
+                                <h5>Payment Information</h5>
+
+                                    {% with user.paymentdetails_set.all|first as card %}
+                                        {% if card %}
+                                            <div class="form-group">
+                                                <label for="card_number">Card Number</label>
+                                                <input type="text" class="form-control" name="card_number"
+                                                    value="{{ card.card_number }}">
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="card_expiry_month">Expiry Month</label>
+                                                <input type="text" class="form-control" name="card_expiry_month"
+                                                     placeholder="MM" maxlength="2"
+                                                    value="{{ card.card_expiry_month }}">
+                                            </div>
+
+                                            <div class="form-group">
+                                                    <label for="card_expiry_year">Expiry Year</label>
+                                                    <input type="text" class="form-control" name="card_expiry_year"
+                                                         placeholder="YY" maxlength="2"
+                                                        value="{{ card.card_expiry_year }}">
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="card_cvv">CVV</label>
+                                                    <input type="text" class="form-control" name="card_cvv"
+                                                        maxlength="4" value="{{ card.card_cvv }}">
+                                            </div>
+                                        {% else %}
+                                            <p class="text-muted">No payment method found.</p>
+                                        {% endif %}
+                                    {% endwith %}
+
+                                    <div class="form-group">
+                                        <label for="account_balance">Account Balance</label>
+                                        <input type="text" class="form-control" name="account_balance"
+                                                value="{{ user.account_balance|default:'0.00' }}" maxlength="10" required>
+                                    </div>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-info">Update</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Delete User Modal -->
+            <div id="deleteUserModal{{ user.id }}" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <form method="POST" action="{% url 'delete_user' user.id %}">
+                            {% csrf_token %}
+                            <div class="modal-header">
+                                <h4 class="modal-title">Delete User</h4>
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Are you sure you want to delete <strong>{{ user.first_name }} {{ user.last_name }}</strong>?</p>
+                                <p class="text-warning"><small>This action cannot be undone.</small></p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- User Details Modal -->
+            <div class="modal fade user-details-modal" id="userDetailsModal{{ user.id }}" tabindex="-1" role="dialog" aria-labelledby="userDetailsModalLabel{{ user.id }}">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="userDetailsModalLabel{{ user.id }}">User Details - {{ user.first_name }} {{ user.last_name }}</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="user-details-section">
+                                <div class="detail-row"><span class="detail-label">Name:</span><span class="detail-value">{{ user.first_name }} {{ user.last_name }}</span></div>
+                                <div class="detail-row"><span class="detail-label">Email:</span><span class="detail-value">{{ user.email }}</span></div>
+                                <div class="detail-row"><span class="detail-label">Phone:</span><span class="detail-value">{{ user.phone_number }}</span></div>
+                                <div class="detail-row"><span class="detail-label">First Name:</span><span class="detail-value">{{ user.first_name }}</span></div>
+                                <div class="detail-row"><span class="detail-label">Last Name:</span><span class="detail-value">{{ user.last_name }}</span></div>
+                                <div class="detail-row"><span class="detail-label">Is Admin:</span><span class="detail-value">{% if user.is_admin %}Yes{% else %}No{% endif %}</span></div>
+                                <div class="detail-row"><span class="detail-label">Is Customer:</span><span class="detail-value">{% if user.is_customer %}Yes{% else %}No{% endif %}</span></div>
+                                <div class="detail-row"><span class="detail-label">Is Active:</span><span class="detail-value">{% if user.is_active %}Yes{% else %}No{% endif %}</span></div>
+                                
+                                <!-- Payment Details Section -->
+                                {% with user.paymentdetails_set.all|first as card %}
+                                <div class="detail-row">
+                                    <span class="detail-label">Card Number:</span>
+                                    <span class="detail-value">
+                                        {% if card %}
+                                            {{ card.card_number }}
+                                        {% else %}
+                                            No card info
+                                        {% endif %}
+                                    </span>
+                                </div>
+
+                                <div class="detail-row">
+                                    <span class="detail-label">Card Expiration:</span>
+                                    <span class="detail-value">
+                                        {% if card %}
+                                            {{ card.card_expiry_month }}/{{ card.card_expiry_year }}
+                                        {% else %}
+                                            No expiration info
+                                        {% endif %}
+                                    </span>
+                                </div>
+                                {% endwith %}
+
+                                <div class="detail-row">
+                                    <span class="detail-label">Account Balance:</span>
+                                    <span class="detail-value">
+                                        {% if user.account_balance %}
+                                            PKR {{ user.account_balance|floatformat:2 }}
+                                        {% else %}
+                                            PKR 0.00
+                                        {% endif %}
+                                    </span>
+                                </div>
+                            </div>
+                            
+                            <div class="rental-history mt-4">
+                                <h4 class="mb-3">Rental Records
+                                </h4>
+    
+                            </div>
+
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped align-middle">
+                                    <thead class="thead-dark">
+                                        <tr>
+                                            <th>Vehicle</th>
+                                            <th>Rental Date</th>
+                                            <th>Return Date</th>
+                                            <th>Payment Status</th>
+                                            <th>Pickup Location</th>
+                                            <th>Drop-off Location</th>
+                                            <th>Total Charge</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for rental in user.rentalhistory_set.all %}
+                                        <tr class="{% if not rental.return_date %}table-warning{% endif %}">
+                                            <td>
+                                                {% if rental.vehicle %}
+                                                    {{ rental.vehicle.brand }} {{ rental.vehicle.model }}
+                                                {% else %}
+                                                    Vehicle not available
+                                                {% endif %}
+                                            </td>
+                                            <td>{{ rental.rental_date|date:"M d, Y H:i" }}</td>
+                                            <td>
+                                                {% if rental.return_date %}
+                                                    {{ rental.return_date|date:"M d, Y H:i" }}
+                                                {% else %}
+                                                    <span class="badge bg-info">Not Returned</span>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                    <span class="badge bg-success">Paid</span>
+                                            </td>
+                                            <td>{{ rental.pickup_location }}</td>
+                                            <td>{{ rental.dropoff_location }}</td>
+                                            <td>
+                                                {% if rental.vehicle %}
+                                                    PKR {{ rental.price}}
+                                                {% else %}
+                                                    N/A
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                        {% empty %}
+                                        <tr>
+                                            <td colspan="7" class="text-center no-rental-history">No rental history found</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+             
+    <!-- Scripts -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const searchInput = document.getElementById('searchInput');
+  const filterSelect = document.getElementById('filterSelect');
+  const userTable = document.getElementById('userTable');
+  const exportPdfBtn = document.getElementById('exportPdfBtn');
+
+  // Function to filter users based on search and dropdown filter
+  function filterUsers() {
+    const searchTerm = searchInput.value.toLowerCase();
+    const filterValue = filterSelect.value;
+
+    Array.from(userTable.rows).forEach(row => {
+      const cells = row.cells;
+
+      const id = cells[0].textContent.toLowerCase();
+      const name = cells[1].textContent.toLowerCase();
+      const firstName = cells[2].textContent.toLowerCase();
+      const lastName = cells[3].textContent.toLowerCase();
+      const email = cells[4].textContent.toLowerCase();
+      const phone = cells[5].textContent.toLowerCase();
+      const isAdmin = cells[6].querySelector('i').classList.contains('status-true');
+      const isCustomer = cells[7].querySelector('i').classList.contains('status-true');
+      const isActive = cells[8].querySelector('i').classList.contains('status-true');
+
+      const matchesSearch = (
+        id.includes(searchTerm) ||
+        name.includes(searchTerm) ||
+        firstName.includes(searchTerm) ||
+        lastName.includes(searchTerm) ||
+        email.includes(searchTerm) ||
+        phone.includes(searchTerm)
+      );
+
+      let matchesFilter = true;
+      if (filterValue === 'is_admin') {
+        matchesFilter = isAdmin;
+      } else if (filterValue === 'is_customer') {
+        matchesFilter = isCustomer;
+      } else if (filterValue === 'is_active') {
+        matchesFilter = isActive;
+      } else if (filterValue === 'inactive') {
+        matchesFilter = !isActive;
+      }
+
+      row.style.display = (matchesSearch && matchesFilter) ? '' : 'none';
+    });
+  }
+
+  searchInput.addEventListener('input', filterUsers);
+  filterSelect.addEventListener('change', filterUsers);
+
+  // Export visible table data to PDF
+  document.getElementById('exportPdfBtn').addEventListener('click', function(e) {
+      e.preventDefault();
+      
+      // Show loading state
+      const originalText = this.innerHTML;
+      this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating PDF...';
+      
+      // Get the table element
+      const table = document.querySelector('.table');
+      
+      // Options for html2canvas
+      const options = {
+          scale: 2, // Higher quality
+          logging: false,
+          useCORS: true,
+          scrollX: 0,
+          scrollY: 0,
+          windowWidth: document.documentElement.offsetWidth,
+          windowHeight: document.documentElement.offsetHeight
+      };
+      
+      // Use html2canvas to capture the table
+      html2canvas(table, options).then(canvas => {
+          const { jsPDF } = window.jspdf;
+          const doc = new jsPDF('p', 'pt', 'a4');
+          
+          // Add title
+          doc.setFontSize(18);
+          doc.text('Users Management Report', 40, 40);
+          
+          // Add date
+          doc.setFontSize(10);
+          doc.text(`Generated on: ${new Date().toLocaleString()}`, 40, 60);
+          
+          // Add the table image
+          const imgData = canvas.toDataURL('image/png');
+          const imgWidth = doc.internal.pageSize.getWidth() - 80;
+          const imgHeight = (canvas.height * imgWidth) / canvas.width;
+          
+          doc.addImage(imgData, 'PNG', 40, 80, imgWidth, imgHeight);
+          
+          // Save the PDF
+          doc.save(`users_report_${new Date().toISOString().slice(0,10)}.pdf`);
+          
+          // Restore button text
+          document.getElementById('exportPdfBtn').innerHTML = originalText;
+      }).catch(error => {
+          console.error('Error generating PDF:', error);
+          alert('Error generating PDF. Please try again.');
+          document.getElementById('exportPdfBtn').innerHTML = originalText;
+      });
+  });
+
+  // Auto-close flash messages after 5 seconds
+  setTimeout(() => {
+      const messages = document.querySelectorAll('.alert');
+      messages.forEach(msg => {
+          msg.style.transition = 'opacity 0.5s ease';
+          msg.style.opacity = '0';
+          setTimeout(() => msg.remove(), 500);
+      });
+  }, 5000);
+});
+</script>
+
+</body>
+</html>

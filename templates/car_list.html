@@ -1,0 +1,987 @@
+{% extends 'base.html' %}
+{% block content %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+<style>
+    main {
+        outline: none !important;
+        box-shadow: none !important;
+        border: none !important;
+    }
+    .car-img-placeholder {
+        width: auto;
+        height: 200px;
+        background-color: #f8f9fa;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 2px dashed #dee2e6;
+    } 
+    .detail-icon {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background-color:rgb(43, 103, 170) ;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 10px;
+        color: #e9ecef;
+    }
+    .specs-box {
+        background-color: #f8f9fa;
+        padding: 15px;
+        height: auto;
+    }
+    .payment-method {
+        border: 1px solid #dee2e6;
+        border-radius: 5px;
+        padding: 15px;
+        margin-bottom: 15px;
+    }
+    .card-number-input, .expiry-date-input {
+        padding-right: 120px;
+    }
+    .card-icons {
+        transition: all 0.3s ease;
+    }
+    .card-icon {
+        transition: all 0.3s ease;
+        opacity: 0.5;
+    }
+    .card-icon.active {
+        opacity: 1;
+        filter: none !important;
+    }
+    .invalid-feedback {
+        display: none;
+        color: #dc3545;
+        font-size: 0.875em;
+    }
+    .was-validated .form-control:invalid ~ .invalid-feedback {
+        display: block;
+    }
+    .spec-item {
+        margin-bottom: 10px;
+    }
+    .paypal-btn {
+        background-color: #FFC439;
+        color: #003087;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 10px;
+        border-radius: 5px;
+        font-weight: bold;
+        width: 100%;
+    }
+    .paypal-btn:hover {
+        background-color: #FFB730;
+        color: #003087;
+    }
+    @media (max-width: 576px) {
+        .card-number-input, .expiry-date-input {
+            padding-right: 80px;
+        }
+        .card-icons img {
+            height: 15px !important;
+        }
+    }
+
+    .success-modal .modal-content {
+        border: none;
+        border-radius: 10px;
+        text-align: center;
+        padding: 30px;
+    }
+    .success-modal .bi-check-circle {
+        font-size: 4rem;
+        color: #28a745;
+        margin-bottom: 20px;
+    }
+    .pay-now-btn {
+        background-color: #28a745;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-weight: bold;
+        width: 100%;
+        margin-top: 15px;
+    }
+    .pay-now-btn:hover {
+        background-color: #218838;
+    }
+
+    .pay-Bal-btn {
+        background-color:rgb(82, 123, 193);
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-weight: bold;
+        width: 100%;
+        margin-top: 15px;
+    }
+</style>
+<body data-user-authenticated="{% if user.is_authenticated %}true{% else %}false{% endif %}">
+<div class="container py-5">
+    <h4 class="mb-0 fs-3">BOOKING DETAILS</h4>
+    <main class="mt-3">
+        <div class="row">
+            <!-- Left Column - Car Details and Table -->
+            <div class="col-md-7">
+                <h4 class="mt-2">{{ booking_info.car_name }}</h4>
+                <p class="mb-2"><strong>BOOKING TYPE:</strong> {{ booking_info.booking_type|title }}</p>
+                <h5 class="mt-3 mb-3">SPECIFICATIONS:</h5>
+                <div class="specs-box mt-2">
+                    <div class="spec-item"><i class="bi bi-person-fill"></i> {{ car.seating_capacity }} Seats</div>
+                    <div class="spec-item"><i class="bi bi-gear"></i> {{ car.transmission }}</div>
+                    <div class="spec-item"><i class="bi bi-fuel-pump"></i> {{ car.fuel_type }}</div>
+                    <div class="spec-item"><i class="bi bi-clock"></i> Overtime: PKR 350/hr</div>
+                </div>
+                <div class="table-responsive mb-4">
+                    <table class="table table-borderless">
+                        <thead>
+                            <tr class="border-bottom">
+                                <th class="fw-normal text-muted"></th>
+                                <th class="fw-normal text-muted">RATE</th>
+                                <th class="fw-normal text-muted">NO. OF DAYS</th>
+                                <th class="fw-normal text-muted">AMOUNT</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-bottom">
+                                <th scope="row" class="fw-normal">Rental</th>
+                                <td>PKR {{ booking_info.price }}/day</td>
+                                <td>{{ booking_info.num_days }}</td>
+                                <td>{% widthratio booking_info.price 1 booking_info.num_days %}</td>
+                            </tr>
+                            <tr class="border-bottom">
+                                <th scope="row" class="fw-normal">Base Fare</th>
+                                <td></td>
+                                <td></td>
+                                <td>225</td>
+                            </tr>
+                            <tr class="border-bottom">
+                                <th scope="row" class="fw-normal">Fuel</th>
+                                <td>40/km</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th scope="row" class="fw-normal">Over Time</th>
+                                <td>350/hour</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="mb-4">
+                    <hr>
+                    <div class="d-flex justify-content-between fw-bold">
+                        <span>TOTAL AMOUNT:</span>
+                        <span class="fs-2">PKR {{ total_amount }}</span>
+                    </div>
+                </div>
+                <div class="form-check mb-0">
+                    <input class="form-check-input" type="checkbox" id="agree" unchecked>
+                    <label class="form-check-label small" for="agree">UNDERSTAND THAT CHARGES MAY BE APPLIED WITH TIME DEPENDING ON FUEL AND OVERTIME</label>
+                </div>
+            </div>
+            
+            <!-- Right Column - Car Image and Pickup/Dropoff Details -->
+            <div class="col-md-5">
+                {% if booking_info.image_url %}
+                <img src="{{ booking_info.image_url }}" class="img-fluid mb-4" alt="{{ booking_info.car_name }}">
+                {% else %}
+                <div class="car-img-placeholder mb-4">
+                    <span class="text-muted">No Image Available</span>
+                </div>
+                {% endif %}
+                <div class="mb-5">
+                    <h5 class="mb-2">PICKUP DETAILS:</h5>
+                    <div class="d-flex align-items-center mt-2 mb-2">
+                        <div class="detail-icon">
+                            <i class="bi bi-geo-alt"></i>
+                        </div>
+                        <div>Location: {{ booking_info.pickup_location }}</div>
+                    </div>
+                    <div class="d-flex align-items-center mb-2">
+                        <div class="detail-icon">
+                            <i class="bi bi-clock"></i>
+                        </div>
+                        <div>Time: {{ pickup_time }}</div>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <div class="detail-icon">
+                            <i class="bi bi-calendar"></i>
+                        </div>
+                        <div>Date: {{ pickup_date }}</div>
+                    </div>
+                </div>
+
+                <h5 class="mt-3">DROP-OFF DETAILS:</h5>
+                <div class="d-flex align-items-center mb-2">
+                    <div class="detail-icon">
+                        <i class="bi bi-geo-alt"></i>
+                    </div>
+                    <div>Location: {{ booking_info.dropoff_location }}</div>
+                </div>
+                <div class="d-flex align-items-center mb-2">
+                    <div class="detail-icon">
+                        <i class="bi bi-clock"></i>
+                    </div>
+                    <div>Time: {{ dropoff_time }}</div>
+                </div>
+                <div class="d-flex align-items-center">
+                    <div class="detail-icon">
+                        <i class="bi bi-calendar"></i>
+                    </div>
+                    <div>Date: {{ dropoff_date }}</div>
+                </div>
+            </div>
+        </div>
+
+       <!-- Payment Methods Section -->
+<div class="row mt-4">
+    <div class="col-12">
+        <h5>PAYMENT METHODS:</h5>
+        <div class="payment-method text-center">
+        <button class="pay-Bal-btn mt-3" id="payWithBalanceBtn" style="height: 50px;" 
+        data-bs-toggle="modal" 
+        {% if user.account_balance < total_amount %}disabled title="Insufficient balance"{% endif %}>
+    <i class="bi bi-wallet2"></i> PAY WITH BALANCE (PKR {{ user.account_balance|floatformat:2 }})
+</button>
+
+{% if user.account_balance < total_amount %}
+<div class="text-danger mt-2">
+    <small>Insufficient balance for this payment (needs PKR {{ total_amount|floatformat:2 }})</small>
+</div>
+{% endif %}
+        </div>
+        <div class="payment-method mt-4">
+            <div class="mb-3 position-relative">
+                <div class="fs-5 mb-3">
+                    <label class="form-check-label text-primary" for="cardPayment">
+                        <i class="bi bi-credit-card me-2"></i> Card
+                    </label>
+                </div>
+                <div class="position-relative">
+                    <label class="form-label">Card Number</label>
+                    <input type="text" 
+                           name="card_number"
+                           class="form-control card-number-input ps-4" 
+                           placeholder="1234 1234 1234 1234"
+                           maxlength="19"
+                           pattern="\d{4} \d{4} \d{4} \d{4}"
+                           required
+                           style="padding-right: 120px;">
+                    <div class="card-icons" style="position: absolute; right: 15px; top: 38px; display: flex; gap: 5px;">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/2560px-Visa_Inc._logo.svg.png" 
+                             alt="VISA" 
+                             style="height: 20px;" class="card-icon visa-icon">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/1280px-Mastercard-logo.svg.png" 
+                             alt="Mastercard" 
+                             style="height: 20px;" class="card-icon mastercard-icon">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/UnionPay_logo.svg/1280px-UnionPay_logo.svg.png" 
+                             alt="UnionPay" 
+                             style="height: 20px;" class="card-icon unionpay-icon">
+                    </div>
+                    <div class="invalid-feedback">Please enter a valid 16-digit card number</div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3 position-relative">
+                    <label class="form-label">Expiration Date</label>
+                    <input type="text" 
+                           name="expiry_date"
+                           class="form-control expiry-date-input" 
+                           placeholder="MM/YY"
+                           maxlength="5"
+                           required>
+                    <div class="invalid-feedback">Please enter a valid expiry date (MM/YY)</div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Security Code</label>
+                    <input type="text" 
+                           name="cvv"
+                           class="form-control" 
+                           placeholder="CVC"
+                           pattern="\d{3}"
+                           maxlength="3"
+                           required>
+                    <div class="invalid-feedback">Please enter a valid 3-digit security code</div>
+                </div>
+            </div>
+            <div class="text-muted small mt-2">
+                By providing your card information, you allow [Company Name] to charge your card for future payments in accordance with their terms.
+            </div>
+            <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" id="savePaymentInfo">
+                <label class="form-check-label" for="savePaymentInfo">Save payment details for future bookings</label>
+            </div>
+            <button class="pay-now-btn mt-3" id="payNowBtn" style="height: 50px;">
+                <i class="bi bi-credit-card"></i> PAY NOW
+            </button>
+        </div>
+        
+        <div class="payment-method text-center">
+            <p class="mb-3">- OR -</p>
+            <button class="paypal-btn" data-bs-toggle="modal" data-bs-target="#paypalModal">
+                <i class="bi bi-paypal fs-4"></i> Pay with PayPal
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="d-flex justify-content-between mt-4">
+    <a href="{% url 'car-list' %}" class="btn btn-outline-danger px-4 d-flex align-items-center gap-2" style="height: 50px;">
+        <i class="bi bi-x-circle fs-5"></i>
+        <span>CANCEL</span>
+    </a>
+    <div class="d-flex justify-content-end">
+        {% csrf_token %}
+    <button class="btn btn-primary px-4" id="confirmBookingBtn" style="height: 50px; color: white;" >
+        <i class="bi bi-check-circle"></i> CONFIRM BOOKING
+    </button>
+</div>
+</div>
+
+</div>
+<!-- Success Modal -->
+<div class="modal fade success-modal" id="successModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <i class="bi bi-check-circle"></i>
+            <h3>Transaction successful!</h3>
+            <p>Your payment has been processed successfully.</p>
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Continue</button>
+        </div>
+    </div>
+</div>
+
+<!--confirmation Model-->
+<div class="modal fade confirm-modal" id="confirmModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <i class="bi bi-check-circle"></i>
+            <h3>Booking Confirmed</h3>
+            <p>Your booking has been placed successfully.</p>
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="continueAfterSuccess" data-url="{% url 'core:home' %}">Continue</button>
+        </div>
+    </div>
+</div>
+
+<!-- PayPal Modal -->
+<div class="modal fade" id="paypalModal" tabindex="-1" aria-labelledby="paypalModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="paypalModalLabel">PayPal Payment</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <div class="d-flex justify-content-center mb-3">
+                    <img src="https://www.paypalobjects.com/webstatic/mktg/Logo/pp-logo-100px.png" alt="PayPal Logo">
+                </div>
+                <h4>Complete payment with PayPal</h4>
+                <p>You'll be redirected to PayPal's secure payment page to complete your transaction.</p>
+                <p class="small text-muted">By clicking below, you agree to PayPal's Terms and Conditions</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="continueToPaypal">Continue to PayPal</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Deduction Modal -->
+<div class="modal fade" id="deductionModal" tabindex="-1" aria-labelledby="deductionModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Confirm Payment</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form id="deductionForm" method="POST" action="{% url 'user:deduction' %}">
+          {% csrf_token %}
+          <!-- Hidden input for the amount (will be filled by JavaScript) -->
+          <input type="hidden" name="withdraw_amount" id="bookingAmount" value="{{ total_amount }}">
+          
+          <div class="mb-3">
+            <label class="form-label">Payment Amount:</label>
+            <div class="form-control-plaintext">PKR {{ total_amount }}</div>
+          </div>
+          
+          <div class="mb-3">
+            <label class="form-label">Current Balance:</label>
+            <div id="balanceDisplay">PKR {{ user.account_balance }}</div>
+          </div>
+          
+          <div class="alert alert-info">
+            This amount will be deducted from your account balance.
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="submit" form="deductionForm" class="btn btn-primary">Confirm Payment</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Authentication Modal -->
+<div class="modal fade" id="authModal" tabindex="-1" aria-labelledby="authModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="authModalLabel">Login</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                {% if messages %}
+                <div class="mb-3">
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags|default:'danger' }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                <form id="loginForm" method="POST" action="{% url 'user:login_pay' %}" >
+                   {% csrf_token %}
+                    <input type="hidden" name="next" value="{{ request.path }}">
+                    <div class="mb-3">
+                        <label for="loginEmail" class="form-label">Email address</label>
+                        <input type="email" class="form-control" id="loginEmail" name="email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="loginPassword" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="loginPassword" name="password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Login</button>
+                </form>
+
+                <form id="signupForm" style="display: none;" method="POST" action="{% url 'user:signup' %}" onsubmit="handleSignup(event)">
+                    {% csrf_token %}
+                    <input type="hidden" name="next" value="{{ request.path }}">
+                    <div class="mb-3">
+                        <label for="signupEmail" class="form-label">Email address</label>
+                        <input type="email" class="form-control" id="signupEmail" name="email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="signupPassword" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="signupPassword" name="password" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="signupConfirmPassword" class="form-label">Confirm Password</label>
+                        <input type="password" class="form-control" id="signupConfirmPassword" name="confirm_password" required>
+                    </div>
+                    <button type="submit" class="btn btn-success">Sign Up</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <p id="toggleForm" style="cursor: pointer; color: blue; margin: 0;">Don't have an account? Sign up</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+{% verbatim %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const cardNumberInput = document.querySelector('.card-number-input');
+
+    if (cardNumberInput) {
+        cardNumberInput.addEventListener('input', function(e) {
+            const cursorPosition = e.target.selectionStart;
+            const originalLength = e.target.value.length;
+            
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 16) {
+                value = value.substring(0, 16);
+            }
+            
+            let formattedValue = '';
+            for (let i = 0; i < value.length; i++) {
+                if (i > 0 && i % 4 === 0) {
+                    formattedValue += ' ';
+                }
+                formattedValue += value[i];
+            }
+            
+            e.target.value = formattedValue;
+            
+            const addedChars = formattedValue.length - originalLength;
+            const newCursorPosition = cursorPosition + addedChars;
+            e.target.setSelectionRange(newCursorPosition, newCursorPosition);
+            
+            const digitsOnly = value.replace(/\s/g, '');
+            if (digitsOnly.length === 16) {
+                e.target.setCustomValidity('');
+                
+                document.querySelectorAll('.card-icon').forEach(icon => {
+                    icon.classList.remove('active');
+                });
+                
+                const firstDigit = digitsOnly.charAt(0);
+                if (firstDigit === '4') {
+                    document.querySelector('.visa-icon').classList.add('active');
+                } else if (firstDigit === '5') {
+                    document.querySelector('.mastercard-icon').classList.add('active');
+                } else if (firstDigit === '6') {
+                    document.querySelector('.unionpay-icon').classList.add('active');
+                }
+            } else {
+                e.target.setCustomValidity('Please enter all 16 digits of your card number');
+            }
+        });
+
+        cardNumberInput.addEventListener('keydown', function(e) {
+            if ([46, 8, 9, 27, 13].includes(e.keyCode) || 
+                (e.keyCode === 65 && e.ctrlKey === true) || 
+                (e.keyCode === 67 && e.ctrlKey === true) || 
+                (e.keyCode === 86 && e.ctrlKey === true) || 
+                (e.keyCode === 88 && e.ctrlKey === true) ||
+                (e.keyCode >= 35 && e.keyCode <= 39)) {
+                    return;
+            }
+            if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                e.preventDefault();
+            }
+        });
+    }
+
+    // Expiry date formatting
+    const expiryDateInput = document.querySelector('.expiry-date-input');
+    if (expiryDateInput) {
+        expiryDateInput.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            
+            if (value.length > 2) {
+                value = value.substring(0, 2) + '/' + value.substring(2, 4);
+            }
+            
+            e.target.value = value.substring(0, 5);
+            
+            if (value.length === 4) {
+                const month = parseInt(value.substring(0, 2));
+                const currentYear = new Date().getFullYear() % 100;
+                const inputYear = parseInt(value.substring(2, 4));
+                
+                if (month < 1 || month > 12) {
+                    e.target.setCustomValidity('Please enter a valid month (01-12)');
+                } else if (inputYear < currentYear || inputYear > currentYear + 20) {
+                    e.target.setCustomValidity('Please enter a valid year');
+                } else {
+                    e.target.setCustomValidity('');
+                }
+            } else {
+                e.target.setCustomValidity('Please enter a valid expiry date (MM/YY)');
+            }
+        });
+    }
+
+    // Elements
+    const agreeCheckbox = document.getElementById('agree');
+    const authModal = new bootstrap.Modal(document.getElementById('authModal'));
+    const loginForm = document.getElementById('loginForm');
+    const signupForm = document.getElementById('signupForm');
+    const toggleForm = document.getElementById('toggleForm');
+    const savePaymentInfoCheckbox = document.getElementById('savePaymentInfo');
+    const payNowBtn = document.getElementById('payNowBtn');
+    const confirmModal = new bootstrap.Modal(document.getElementById('confirmModal'));
+    const confirmBookingBtn = document.getElementById('confirmBookingBtn');
+    const successModal = new bootstrap.Modal(document.getElementById('successModal'));
+    const continueAfterSuccess = document.getElementById('continueAfterSuccess');
+    const continueToPaypal = document.getElementById('continueToPaypal');
+
+    // Check if user is logged in and load payment details if available
+    checkUserLoggedIn();
+
+    // Toggle between login and signup forms
+    toggleForm.addEventListener('click', function() {
+        if (loginForm.style.display === 'none') {
+            loginForm.style.display = 'block';
+            signupForm.style.display = 'none';
+            toggleForm.textContent = "Don't have an account? Sign up";
+        } else {
+            loginForm.style.display = 'none';
+            signupForm.style.display = 'block';
+            toggleForm.textContent = "Already have an account? Login";
+        }
+    });
+
+    // Agree checkbox click handler
+    agreeCheckbox.addEventListener('click', function(e) {
+        if (!isUserLoggedIn()) {
+            e.preventDefault(); // Prevent checkbox from being checked
+            authModal.show();
+        }
+    });
+
+    // Handle login form submission
+    loginForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        await handleLogin(e);
+    });
+
+    // Handle signup form submission
+    signupForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        handleSignup(e);
+    });
+
+    // Confirm booking button click handler
+    confirmBookingBtn.addEventListener('click', function() {
+        if (!agreeCheckbox.checked) {
+            alert('Please agree to the terms by checking the checkbox');
+            return;
+        }
+        confirmBook();
+        // Show success message
+        confirmModal.show();
+    });
+
+    // Continue after success button click handler
+    continueAfterSuccess.addEventListener('click', function() {
+        // Redirect to home page
+        window.location.href = this.dataset.url;
+    });
+
+    // Continue to PayPal button click handler
+    continueToPaypal.addEventListener('click', function() {
+        window.location.href = this.dataset.url;
+    });
+
+    // Save payment info checkbox change handler
+    savePaymentInfoCheckbox.addEventListener('change', function() {
+        if (this.checked && isUserLoggedIn()) {
+            savePaymentDetails();
+        }
+    });
+
+    // Pay now button click handler
+    payNowBtn.addEventListener('click', function() {
+        if (!validatePaymentForm()) {
+            return;
+        }
+        
+        if (savePaymentInfoCheckbox.checked && isUserLoggedIn()) {
+            savePaymentDetails();
+        }
+
+        // Show success modal
+        successModal.show();
+    });
+
+    // Functions
+    function isUserLoggedIn() {
+        return document.body.getAttribute('data-user-authenticated') === 'true';
+    }
+
+    function checkUserLoggedIn() {
+        fetch(document.querySelector('#loginForm').action.replace('login_pay', 'get_payment_details'))
+        .then(response => response.json())
+        .then(data => {
+            if (data.hasSavedCard) {
+                // Auto-fill payment details if user has saved card
+                document.querySelector('.card-number-input').value = data.cardNumber;
+                document.querySelector('.expiry-date-input').value = data.expiryDate;
+                savePaymentInfoCheckbox.checked = true;
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+
+    async function handleLogin(e) {
+    e.preventDefault(); 
+    const form = e.target;
+    const formData = new FormData(form);
+
+    try {
+        const response = await fetch(form.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRFToken': formData.get('csrfmiddlewaretoken')
+            }
+        });
+
+        const contentType = response.headers.get('content-type');
+
+        if (response.status === 200) {
+            if (contentType && contentType.includes('application/json')) {
+                const data = await response.json();
+                document.activeElement.blur(); 
+                authModal.hide();       
+                document.body.setAttribute('data-user-authenticated', 'true');
+                    
+                    // Allow the checkbox to be checked
+                console.log(data, 'data');
+            } 
+        } else {
+            if (contentType && contentType.includes('application/json')) {
+                const errorData = await response.json();
+                alert(errorData.error || 'Login failed. Please try again.');
+            } 
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('An error occurred during login. Please try again.');
+    }
+}
+
+
+
+    function handleSignup(e) {
+        const form = e.target;
+        const formData = new FormData(form);
+        
+
+        // Check if passwords match
+        const password = form.querySelector('#signupPassword').value;
+        const confirmPassword = form.querySelector('#signupConfirmPassword').value;
+
+        if (password !== confirmPassword) {
+            alert('Passwords do not match!');
+            return;
+        }
+
+        fetch(form.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRFToken': formData.get('csrfmiddlewaretoken')
+            }
+        })
+        .then(response => {
+            if (response.redirected) {
+                window.location.href = response.url;
+            } else {
+                return response.json();
+            }
+        })
+        .then(data => {
+            if (data && data.success) {
+                authModal.hide();
+                // After successful signup, allow checkbox to be checked
+                agreeCheckbox.checked = true;
+                checkUserLoggedIn();
+            } else {
+                alert('Signup failed. Please try again.');
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+
+    function savePaymentDetails() {
+        const cardNumber = document.querySelector('.card-number-input').value;
+        const expiryDate = document.querySelector('.expiry-date-input').value;
+        const cvv = document.querySelector('input[placeholder="CVC"]').value;
+        
+        fetch(document.querySelector('#loginForm').action.replace('login_pay', 'save_payment_details'), {
+            method: 'POST',
+            body: JSON.stringify({
+                cardNumber: cardNumber,
+                expiryDate: expiryDate,
+                cvv: cvv
+            }),
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (!data.success) {
+                console.error('Failed to save payment details:', data.error);
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+
+    function validatePaymentForm() {
+        const cardNumber = document.querySelector('.card-number-input').value;
+        const expiryDate = document.querySelector('.expiry-date-input').value;
+        const cvv = document.querySelector('input[placeholder="CVC"]').value;
+        
+        // Simple validation - you might want to enhance this
+        if (!cardNumber || !expiryDate || !cvv) {
+            alert('Please fill in all payment details');
+            return false;
+        }
+        
+        return true;
+    }
+
+    function confirmBook() {
+        console.log('Booking confirmed');
+    // Get CSRF token for Django's security
+    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    
+    // Show loading state
+    const btn = document.getElementById('confirmBookingBtn');
+    btn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Processing...';
+    btn.disabled = true;
+
+    // Make AJAX request to save rental details
+    fetch('/user/save_rental_details/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrftoken
+        },
+        credentials: 'same-origin'
+    })
+    .then(response => response.json())
+    .then(data => {
+    if (data.success) {
+        console.log('Booking confirmed:', data);
+        // Handle success (e.g., redirect to a success page)
+    } else {
+        alert(data.error);  // Show error message
+        btn.innerHTML = '<i class="bi bi-check-circle"></i> CONFIRM BOOKING';
+        btn.disabled = false;
+        
+        // Auto-redirect if `redirect_url` exists (Django sends this)
+        if (data.redirect_url) {
+            window.location.href = data.redirect_url;  // Redirect to index.html
+        }
+    }
+})
+.catch(error => {
+    console.error('Fetch Error:', error);
+    alert('Failed to process booking. Please try again.');
+    btn.innerHTML = '<i class="bi bi-check-circle"></i> CONFIRM BOOKING';
+    btn.disabled = false;
+});
+    }
+
+    // Helper function to get CSRF token
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+    function showModal(modalId) {
+        const modalElement = document.getElementById(modalId);
+        if (modalElement && bootstrap.Modal) {
+            const modal = new bootstrap.Modal(modalElement);
+            modal.show();
+        }
+    }
+
+    // Function to show error messages in a consistent way
+    function showError(message) {
+        // You can replace this with a more sophisticated error display if needed
+        alert('Error: ' + message);
+    }
+
+    document.getElementById('payWithBalanceBtn').addEventListener('click', () => {
+        // Get the booking amount from wherever it's stored in your page
+        const bookingAmount = document.getElementById('bookingAmount').value; // Adjust this selector
+        
+        // Create a hidden form with the amount
+        const form = document.getElementById('deductionForm');
+        const amountInput = document.createElement('input');
+        amountInput.type = 'hidden';
+        amountInput.name = 'withdraw_amount';
+        amountInput.value = bookingAmount;
+        form.appendChild(amountInput);
+        
+        showModal('deductionModal');
+    });
+
+    function handleFormSubmit(formId, successMessage) {
+        const form = document.getElementById(formId);
+
+        if (!form) return;
+
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const formData = new FormData(form);
+
+            fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': csrfToken
+                },
+                credentials: 'same-origin'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const modal = bootstrap.Modal.getInstance(document.getElementById(formId === 'depositForm' ? 'depositModal' : 'deductionModal'));
+                    if (modal) modal.hide();
+
+                    const balanceDisplay = document.getElementById('balanceDisplay');
+                    if (balanceDisplay) {
+                        balanceDisplay.textContent = 'PKR ' + data.new_balance;
+                    }
+
+                    if (data.redirect_url) {
+                        window.location.href = data.redirect_url;
+                    } else {
+                        alert(successMessage);
+                    }
+                    form.reset();
+                } else {
+                    // Handle different types of errors
+                    if (data.error) {
+                        if (data.redirect_url) {
+                            // For errors that require redirect (like active rentals or car booked)
+                            showError(data.error);
+                            window.location.href = data.redirect_url;
+                        } else {
+                            // For other errors
+                            showError(data.error);
+                        }
+                    } else {
+                        showError('Something went wrong.');
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Request failed:', error);
+                showError('An error occurred while processing your request.');
+            });
+        });
+    }
+
+    handleFormSubmit('depositForm', 'Deposit successful!');
+    handleFormSubmit('deductionForm', 'Payment successful! Your account has been charged.');
+});
+
+
+</script>
+{% endverbatim %}
+
+{% endblock %}

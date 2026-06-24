@@ -1,0 +1,700 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet"> 
+    <style>
+      .navbar {
+          position: absolute;
+          top: 0;
+          width: 100%;
+          background-color: transparent !important; /* Transparent background */
+          z-index: 1000;
+       }
+.video-section {
+  padding-bottom: 100px;
+    position: absolute;
+    height: 100vh; /* Set the section height to viewport height */
+    width: 100vw;
+    overflow: hidden;
+}
+
+.video-section video {
+    position: absolute;
+    top: -12%; /* Start from the top */
+    left: 0;
+    width: 100%;
+    height: 110%; /* Set the video height to viewport height */
+    object-fit: cover;
+    z-index: -1;
+} 
+
+      html, body {
+         margin: 0;
+         padding: 0;
+         height: 100%;
+      }
+      
+      
+      body {
+            margin: 0;
+            padding: 0;
+            height: 2000px;  /* To demonstrate scrolling */
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+          }
+      
+      
+
+      .navbar-toggler {
+           border: none;
+           outline: none;
+           padding: 0.5rem;
+       }
+
+/* Custom hamburger icon bars */
+      .navbar-toggler .bar {
+         display: block;
+         width: 30px;
+         height: 3px;
+         margin: 5px auto;
+         background-color: white;
+         transition: all 0.3s;
+      }
+
+      .slide-menu {
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 280px; /* increased width */
+        height: 100%;
+        background-color: rgba(17, 17, 17, 0.9); /* 90% opacity */
+        padding: 2rem 1.5rem;
+        transform: translateX(100%);
+        transition: transform 0.3s ease-in-out;
+        z-index: 1050;
+      }
+  
+      .slide-menu.show {
+        transform: translateX(0%);
+      }
+  
+      .slide-menu a {
+        display: block;
+        color: white;
+        text-decoration: none;
+        padding: 1rem 0;
+        font-size: 1.2rem;
+      }
+  
+      .slide-menu a:hover {
+        background-color: #222;
+      } 
+      
+      .content-overlay {
+            position: absolute;
+            top: 50%;
+            right: 1%;
+            transform: translateY(-50%);
+            width: 40%;
+            /* background-color: white;*/ /* No transparency */
+            color: black;
+            padding: 30px;
+            text-align: center;
+            z-index: 1;
+            border-radius: 15px;
+            /* box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);*/
+            font-family: 'Times New Roman', Tahoma, Geneva, Verdana, sans-serif; /* Clean font */
+        }
+        
+      .content-overlay h1 {
+            font-size: 10rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+      .content-overlay p {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+        
+      .content-overlay .btn {
+            display: block;
+            width: 80%;
+            margin: 10px auto;
+            border-radius: 25px;
+            font-weight: 500;
+            background-color:rgb(38, 154, 227);
+        }
+        
+      
+      .modal-content {
+          border-radius: 10px;
+        }
+    
+      .modal-dialog {
+          max-width: 400px; /* limit width */
+          margin: 2rem auto;
+        }
+    
+      .modal-backdrop {
+          backdrop-filter: blur(2px);
+        }
+      
+       main {
+            /* background-color: white; */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            min-height: 1000px; /* Page content below the video */
+          }   
+      .feature-card {
+            height: 100%;
+            transition: transform 0.3s;
+            border-radius: 10px;
+            border: none;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+      .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+      .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #0d6efd;
+        }
+
+      section{
+        padding: 100px;
+
+      }
+      .section-title {
+            position: relative;
+            margin-bottom: 3rem;
+        }
+      .section-title:after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: #0d6efd;
+        }   
+
+        .partners-section {
+            padding: 60px 0;
+            background-color:rgb(255, 255, 255);
+            
+        }
+        .partners-container {
+            display: flex;
+            flex-wrap: nowrap;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            padding: 20px 0;
+            min-width: fit-content;
+        }
+        .partner-logo {
+            height: 60px;
+            width: auto;
+            max-width: 150px;
+            object-fit: contain;
+            filter: grayscale(100%);
+            transition: all 0.3s ease;
+        }
+        .partner-logo:hover {
+            filter: grayscale(0%);
+            transform: scale(1.05);
+        }
+        .section-title {
+            position: relative;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        .section-title:after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 15%;
+            height: 3px;
+            background: #0d6efd;
+        }
+        
+        /* Hide scrollbar but keep functionality */
+        .partners-section::-webkit-scrollbar {
+            display: none;
+        }
+        .partners-section {
+            padding-top: 100px;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .testimonials-section {
+            padding: 80px 0;
+            background-color:rgb(255, 255, 255);
+            position: relative;
+        }
+        .testimonial-card {
+            border-radius: 10px;
+            border: none;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+            height: 100%;
+            margin: 0 15px; /* Margin between cards */
+            width: 400px; /* Fixed width for cards */
+            flex: 0 0 auto;
+        }
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+        .quote-icon {
+            font-size: 2rem;
+            color: #0d6efd;
+            margin-bottom: 1rem;
+        }
+        .section-title {
+            position: relative;
+            margin-bottom: 3rem;
+        }
+        .section-title:after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 10%;
+            height: 3px;
+            background: #0d6efd;
+        }
+        .client-info {
+            margin-top: 1.5rem;
+            font-style: italic;
+        }
+        .client-name {
+            font-weight: 600;
+            color: #0d6efd;
+        }
+        .testimonials-container {
+            display: flex;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            padding: 20px 0;
+            -ms-overflow-style: none;
+            
+        }
+        .testimonials-container::-webkit-scrollbar {
+            display: none;
+        }
+        .nav-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            background-color: #0d6efd;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            z-index: 10;
+            border: none;
+        }
+        .nav-button.prev {
+            left: -25px;
+        }
+        .nav-button.next {
+            right: -25px;
+        }
+        .container-relative {
+            position: relative;
+        }
+
+    </style>
+    <title>drift</title>
+  </head>
+          <!-- Transparent Navbar over Video -->
+<nav class="navbar">
+  <div class="container-fluid d-flex justify-content-end">
+    <button class="navbar-toggler bg-dark custom-toggler" type="button" id="menuToggle">
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </button>
+  </div>
+  <div class="slide-menu" id="sideMenu">
+    <button id="closeBtn" class="btn btn-close btn-close-white ms-auto d-block mb-4" aria-label="Close"></button>
+    {% if user.is_authenticated %}
+      <a href="{% url 'profile' %}" class="btn btn-link text-white">{{ user.username }}</a>
+    {% else %}
+      <a href="{% url 'core:Login-Signup' %}" class="btn btn-link text-white" data-bs-toggle="modal" data-bs-target="#authModal">Login / Signup</a>
+    {% endif %}
+    <a href="{% url 'display'%}">Vehicles</a>
+    <a href="{% url 'core:about'%}">About</a>
+    <a href="{% url 'core:contact'%}">Contact</a>
+    {% if user.is_authenticated %}
+      <a href="{% url 'user:logout' %}" class="btn btn-link text-white">Logout</a>
+    {% endif %}
+  </div>
+</nav>
+
+  <!-- Video Section -->
+    <section class="video-section">
+      <video autoplay muted loop>
+        <!--<source src="{% static 'core/driftIntro.mp4' %}" type="video/mp4">-->
+        <source src="{% static 'core/sample.mp4' %}" type="video/mp4">
+      Your browser does not support the video tag.
+      </video>
+      <div class="content-overlay">
+        <h1>Drift</h1>
+        <p>Rent car at a reasonable price with us</p>
+        <a href={% url 'car-list'%} class="btn btn-primary">Rent Car</a>
+      </div> 
+    </section>
+
+    
+
+<!-- Modal -->
+<div class="modal fade" id="authModal" tabindex="-1" aria-labelledby="authModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="authModalLabel">Login</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Messages display inside modal -->
+        {% if messages %}
+        <div class="mb-3">
+          {% for message in messages %}
+            <div class="alert alert-{{ message.tags|default:'danger' }} alert-dismissible fade show" role="alert">
+              {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          {% endfor %}
+        </div>
+        {% endif %}
+        <!-- Login Form -->
+        <form id="loginForm" method="POST" action="{% url 'user:login' %}">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label for="loginEmail" class="form-label">Email address</label>
+            <input type="email" class="form-control" id="loginEmail" name="email" required>
+          </div>
+          <div class="mb-3">
+            <label for="loginPassword" class="form-label">Password</label>
+            <input type="password" class="form-control" id="loginPassword" name="password" required>
+          </div>
+          <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+
+        <!-- Signup Form (Hidden initially) -->
+        <form id="signupForm" style="display: none;" method="POST" action="{% url 'user:signup' %}">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label for="signupEmail" class="form-label">Email address</label>
+            <input type="email" class="form-control" id="signupEmail" name="email" required>
+          </div>
+          <div class="mb-3">
+            <label for="signupPassword" class="form-label">Password</label>
+            <input type="password" class="form-control" id="signupPassword" name="password" required>
+          </div>
+          <div class="mb-3">
+            <label for="signupConfirmPassword" class="form-label">Confirm Password</label>
+            <input type="password" class="form-control" id="signupConfirmPassword" name="confirm_password" required>
+          </div>
+          <button type="submit" class="btn btn-success">Sign Up</button>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <p id="toggleForm" style="cursor: pointer; color: blue; margin: 0;">Don't have an account? Sign up</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Why Choose Us Section - Modified -->
+<section class="py-5">
+  <div style="height: 450px;"></div>
+    <div class="container">
+        <h2 class="text-center section-title" style="margin-top:80px">Why Choose Us</h2>
+        <div class="row g-4 flex-nowrap overflow-auto pb-3 mt-2"> <!-- Added flex-nowrap and overflow-auto -->
+    <!-- GPS Included -->
+    <div class="col flex-shrink-0" style="min-width: 280px;"> <!-- Removed fixed column classes -->
+        <div class="card feature-card h-100 p-4 text-center"> <!-- Added h-100 -->
+            <div class="feature-icon">
+                <i class="bi bi-geo-alt-fill"></i>
+            </div>
+            <h4>GPS Included</h4>
+            <p class="mb-0">Our cars come equipped with GPS navigation, ensuring you reach your destination with ease. Enjoy seamless travel.</p>
+        </div>
+    </div>
+    
+    <!-- 24/7 Support -->
+    <div class="col flex-shrink-0" style="min-width: 280px;">
+        <div class="card feature-card h-100 p-4 text-center">
+            <div class="feature-icon">
+                <i class="bi bi-headset"></i>
+            </div>
+            <h4>24/7 Support</h4>
+            <p class="mb-0">We offer 24/7 roadside assistance, providing peace of mind throughout your rental period.</p>
+        </div>
+    </div>
+    
+    <!-- Well-Maintained Fleet -->
+    <div class="col flex-shrink-0" style="min-width: 280px;">
+        <div class="card feature-card h-100 p-4 text-center">
+            <div class="feature-icon">
+                <i class="bi bi-car-front"></i>
+            </div>
+            <h4>Well-Maintained Fleet</h4>
+            <p class="mb-0">Drive late-model vehicles that undergo rigorous 150-point inspections before every rental for optimal safety.</p>
+        </div>
+    </div>
+</div>
+         <div class="row g-4 flex-nowrap overflow-auto pb-3 mt-1"> <!-- Added flex-nowrap and overflow-auto -->
+    <!-- Convenient Locations -->
+    <div class="col flex-shrink-0" style="min-width: 280px;"> <!-- Removed fixed column classes -->
+        <div class="card feature-card h-100 p-4 text-center"> <!-- Added h-100 -->
+            <div class="feature-icon">
+                <i class="bi bi-geo-alt-fill"></i>
+            </div>
+            <h4>Convenient Locations</h4>
+            <p class="mb-0">Pick up and drop off at multiple city centers, airports, and neighborhood hubs with extended operating hours.</p>
+        </div>
+    </div>
+    
+    <!--Seamless Digital Experience  -->
+    <div class="col flex-shrink-0" style="min-width: 280px;">
+        <div class="card feature-card h-100 p-4 text-center">
+            <div class="feature-icon">
+                <i class="bi bi-phone"></i>
+            </div>
+            <h4>Seamless Digital Experience</h4>
+            <p class="mb-0">Book or modify rentals instantly through our user-friendly mobile app with paperless transactions.</p>
+        </div>
+    </div>
+    
+    <!-- Competitive Pricing -->
+    <div class="col flex-shrink-0" style="min-width: 280px;">
+        <div class="card feature-card h-100 p-4 text-center">
+            <div class="feature-icon">
+                <i class="bi bi-cash"></i>
+            </div>
+            <h4>Competitive Pricing</h4>
+            <p class="mb-0">Enjoy transparent pricing with no hidden fees, plus exclusive discounts for loyal customers and advance bookings.</p>
+        </div>
+    </div>
+</div>
+      <!-- Partners Section -->
+    <section class="partners-section">
+        <div class="container">
+            <h2 class="section-title">Our Elite Fleet</h2>
+            <div class="partners-container">
+                <!-- BMW -->
+                <img src="{% static 'core/BMW.png' %}" alt="BMW" class="partner-logo">
+                <!--AUDI-->
+                <img src="{% static 'core/audi.png' %}" alt="Audi" class="partner-logo">
+                <!-- Ford -->
+                <img src="{% static 'core/ford.png' %}" alt="Ford" class="partner-logo">
+                <!-- Bentley -->
+                <img src="{% static 'core/bentley.png' %}" alt="Bentley" class="partner-logo">
+                <!-- Ferrari -->
+                <img src="{% static 'core/ferrari.png' %}" alt="Ferrari" class="partner-logo">
+                <!-- Lamborghini -->
+                <img src="{% static 'core/lamborghini.png' %}" alt="Lamborghini" class="partner-logo">
+                <!-- Toyota -->
+                <img src="{% static 'core/toyota.png' %}" alt="Toyota" class="partner-logo">
+                <!-- Mercedes -->
+                <img src="https://www.carlogos.org/logo/Mercedes-Benz-logo-2011-1920x1080.png" alt="Mercedes-Benz" class="partner-logo">
+                <!-- Porsche -->
+                <img src="{% static 'core/porsche.png' %}" alt="Porsche" class="partner-logo">
+                <!-- Honda -->
+                <img src="https://www.carlogos.org/logo/Honda-logo-1920x1080.png" alt="HONDA" class="partner-logo">
+            </div>
+        </div>
+    </section>
+    <section class="testimonials-section">
+        <div class="container container-relative">
+            <h2 class="text-center section-title">Reviews</h2>
+            
+            <button class="nav-button prev" onclick="scrollTestimonials(-300)">
+                <i class="bi bi-chevron-left"></i>
+            </button>
+            
+            <div class="testimonials-container" id="testimonialsScroll" >
+                <!-- Testimonials will be inserted here by JavaScript -->
+            </div>
+            
+            <button class="nav-button next" onclick="scrollTestimonials(300)">
+                <i class="bi bi-chevron-right"></i>
+            </button>
+        </div>
+    </section>
+    </div>
+</section>
+
+   <!-- javascript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+       const toggleBtn = document.getElementById('menuToggle');
+      const closeBtn = document.getElementById('closeBtn');
+      const sideMenu = document.getElementById('sideMenu');
+
+      toggleBtn.addEventListener('click', () => {
+        sideMenu.classList.add('show');
+      });
+    
+      closeBtn.addEventListener('click', () => {
+        sideMenu.classList.remove('show');
+      });
+
+      const toggleForm = document.getElementById('toggleForm');
+      const loginForm = document.getElementById('loginForm');
+      const signupForm = document.getElementById('signupForm');
+      const modalTitle = document.getElementById('authModalLabel');
+
+      toggleForm.addEventListener('click', () => {
+        if (loginForm.style.display === 'none') {
+          loginForm.style.display = 'block';
+          signupForm.style.display = 'none';
+          modalTitle.innerText = 'Login';
+          toggleForm.innerText = "Don't have an account? Sign up";
+        } else {
+           loginForm.style.display = 'none';
+           signupForm.style.display = 'block';
+           modalTitle.innerText = 'Sign Up';
+           toggleForm.innerText = "Already have an account? Login";
+        }
+     });
+
+     document.getElementById('loginForm').addEventListener('submit', function() {
+    var modal = bootstrap.Modal.getInstance(document.getElementById('authModal'));
+    if (modal) modal.hide();
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    {% if messages %}
+    var authModal = new bootstrap.Modal(document.getElementById('authModal'));
+    authModal.show();
+    {% endif %}
+});
+
+// Testimonials data stored in a dictionary-like object
+        const testimonials = {
+            testimonial1: {
+                quote: "Speedy Wheels made my business trip seamless. Great service and reliable cars!",
+                name: "Ahmed Raza",
+                title: "Cooperate Manager"
+            },
+            testimonial2: {
+                quote: "I rented a car for a weekend getaway and had an amazing experience. Highly recommended!",
+                name: "Syed Ali Hussain",
+                title: "Lecturer"
+            },
+            testimonial3: {
+                quote: "The best car rental service I've ever used. The staff was friendly and the car was spotless.",
+                name: "Haniya Zehra",
+                title: "Graphic Designer"
+            },
+            testimonial4: {
+                quote: "Excellent customer service and well-maintained vehicles. Will definitely use again!",
+                name: "Ayesha Rizwan",
+                title: "Marketing Director"
+            },
+            testimonial5: {
+                quote: "The online booking system is so easy to use, and the prices are very competitive.",
+                name: "Muhammad Ismail",
+                title: "Software Engineer"
+            },
+            testimonial6: {
+                quote: "Perfect for family vacations! We got a spacious SUV that was clean and comfortable.",
+                name: "Fatima Khan",
+                title: "Teacher"
+            },
+            testimonial7: {
+                quote: "Quick and efficient service at the airport location. Saved me so much time!",
+                name: "Ali Ahmed",
+                title: "Consultant"
+            },
+            testimonial8: {
+                quote: "The loyalty program is fantastic! I've earned free upgrades on my last two rentals.",
+                name: "Sara Malik",
+                title: "Nurse"
+            },
+            testimonial9: {
+                quote: "Great selection of luxury vehicles. Rented a convertible for my anniversary - unforgettable!",
+                name: "Nashrah Sohail",
+                title: "Financial Analyst"
+            },
+            testimonial10: {
+                quote: "24/7 roadside assistance gave me peace of mind during my cross-country road trip.",
+                name: "Owais Khan",
+                title: "Travel Blogger"
+            }
+        };
+
+        // Function to generate testimonial cards
+        function generateTestimonials() {
+            const container = document.getElementById('testimonialsScroll');
+            
+            // Loop through all testimonials
+            for (const key in testimonials) {
+                if (testimonials.hasOwnProperty(key)) {
+                    const testimonial = testimonials[key];
+                    
+                    // Create card element
+                    const card = document.createElement('div');
+                    card.className = 'card testimonial-card p-4';
+                    card.innerHTML = `
+                        <div class="quote-icon" style="text-align: center;>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                        </div>
+                        <p class="mb-0">"${testimonial.quote}"</p>
+                        <div class="client-info" style="text-align: center;">
+                            <p class="client-name mb-0">${testimonial.name}</p>
+                            <p class="mb-0">${testimonial.title}</p>
+                        </div>
+                    `;
+                    
+                    // Add card to container
+                    container.appendChild(card);
+                }
+            }
+        }
+
+        // Call the function when page loads
+        window.onload = generateTestimonials;
+
+        // Scroll function for navigation buttons
+        function scrollTestimonials(offset) {
+            const container = document.getElementById('testimonialsScroll');
+            container.scrollBy({
+                left: offset,
+                behavior: 'smooth'
+            });
+        }
+
+    </script>
+  {% include 'core/footer.html' %}
+  </body>
+
+</html>
+    

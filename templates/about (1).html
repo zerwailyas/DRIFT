@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Vehicle Management</title>
+    
+    <!-- CSS/JS CDN Imports -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <link rel="icon" href="data:,">
+    
+    <style>
+        body {
+            color: #566787;
+            background: #f5f5f5;
+            font-family: 'Varela Round', sans-serif;
+            font-size: 13px;
+        }
+        .table-wrapper {
+            background: #fff;
+            padding: 20px 25px;
+            margin: 30px 0;
+            border-radius: 3px;
+            box-shadow: 0 1px 1px rgba(0,0,0,.05);
+        }
+        .table-title {
+            padding-bottom: 15px;
+            background: #435d7d;
+            color: #fff;
+            padding: 16px 30px;
+            margin: -20px -25px 10px;
+            border-radius: 3px 3px 0 0;
+        }
+        .table-title h2 {
+            margin: 5px 0 0;
+            font-size: 24px;
+        }
+        .table-title .btn-group {
+            float: right;
+        }
+        .table-title .btn {
+            color: #fff;
+            float: right;
+            font-size: 13px;
+            border: none;
+            min-width: 50px;
+            border-radius: 2px;
+            border: none;
+            outline: none !important;
+            margin-left: 10px;
+        }
+        .table-title .btn i {
+            float: left;
+            font-size: 21px;
+            margin-right: 5px;
+        }
+        .table-title .btn span {
+            float: left;
+            margin-top: 2px;
+        }
+        table.table tr th, table.table tr td {
+            border-color: #e9e9e9;
+            padding: 12px 15px;
+            vertical-align: middle;
+        }
+        table.table tr th:first-child {
+            width: 60px;
+        }
+        table.table tr th:last-child {
+            width: 100px;
+        }
+        table.table-striped tbody tr:nth-of-type(odd) {
+            background-color: #fcfcfc;
+        }
+        table.table-striped.table-hover tbody tr:hover {
+            background: #f5f5f5;
+        }
+        table.table td:last-child i {
+            opacity: 0.9;
+            font-size: 22px;
+            margin: 0 5px;
+        }
+        table.table td a {
+            font-weight: bold;
+            color: #566787;
+            display: inline-block;
+            text-decoration: none;
+            outline: none !important;
+        }
+        table.table td a:hover {
+            color: #2196F3;
+        }
+        table.table td a.edit {
+            color: #FFC107;
+        }
+        table.table td a.delete {
+            color: #F44336;
+        }
+        table.table td i {
+            font-size: 19px;
+        }
+        .pagination {
+            float: right;
+            margin: 0 0 5px;
+        }
+        .pagination li a {
+            border: none;
+            font-size: 13px;
+            min-width: 30px;
+            min-height: 30px;
+            color: #999;
+            margin: 0 2px;
+            line-height: 30px;
+            border-radius: 2px !important;
+            text-align: center;
+            padding: 0 6px;
+        }
+        .pagination li a:hover {
+            color: #666;
+        }
+        .pagination li.active a, .pagination li.active a.page-link {
+            background: #03A9F4;
+        }
+        .pagination li.active a:hover {
+            background: #0397d6;
+        }
+        .hint-text {
+            float: left;
+            margin-top: 10px;
+            font-size: 13px;
+        }
+        /* Custom checkbox */
+        .custom-checkbox {
+            position: relative;
+        }
+        .custom-checkbox input[type="checkbox"] {
+            opacity: 0;
+            position: absolute;
+            margin: 5px 0 0 3px;
+            z-index: 9;
+        }
+        .custom-checkbox label:before{
+            width: 18px;
+            height: 18px;
+        }
+        .custom-checkbox label:before {
+            content: '';
+            margin-right: 10px;
+            display: inline-block;
+            vertical-align: text-top;
+            background: white;
+            border: 1px solid #bbb;
+            border-radius: 2px;
+            box-sizing: border-box;
+            z-index: 2;
+        }
+        .custom-checkbox input[type="checkbox"]:checked + label:after {
+            content: '';
+            position: absolute;
+            left: 6px;
+            top: 3px;
+            width: 6px;
+            height: 11px;
+            border: solid #000;
+            border-width: 0 3px 3px 0;
+            transform: inherit;
+            z-index: 3;
+            transform: rotateZ(45deg);
+        }
+        .custom-checkbox input[type="checkbox"]:checked + label:before {
+            border-color: #03A9F4;
+            background: #03A9F4;
+        }
+        .custom-checkbox input[type="checkbox"]:checked + label:after {
+            border-color: #fff;
+        }
+        /* Modal styles */
+        .modal .modal-dialog {
+            max-width: 400px;
+        }
+        .modal .modal-header, .modal .modal-body, .modal .modal-footer {
+            padding: 20px 30px;
+        }
+        .modal .modal-content {
+            border-radius: 3px;
+        }
+        .modal .modal-footer {
+            background: #ecf0f1;
+            border-radius: 0 0 3px 3px;
+        }
+        .modal .modal-title {
+            display: inline-block;
+        }
+        .modal .form-control {
+            border-radius: 2px;
+            box-shadow: none;
+            border-color: #dddddd;
+        }
+        .modal textarea.form-control {
+            resize: vertical;
+        }
+        .modal .btn {
+            border-radius: 2px;
+            min-width: 100px;
+        }
+        .modal form label {
+            font-weight: bold;
+        }
+        /* Messages styling */
+        .messages {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        .alert {
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            color: white;
+            display: inline-flex;
+            justify-content: space-between;
+            align-items: center;
+            min-width: 300px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        .alert-success {
+            background-color: #4CAF50;
+        }
+        .alert-error {
+            background-color: #f44336;
+        }
+        .alert-info {
+            background-color: #2196F3;
+        }
+        .alert-warning {
+            background-color: #ff9800;
+        }
+        .close-btn {
+            margin-left: 15px;
+            color: white;
+            font-weight: bold;
+            font-size: 22px;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+        .status-icon {
+            font-size: 18px;
+        }
+        .status-true {
+            color: #4CAF50;
+        }
+        .status-false {
+            color: #F44336;
+        }
+        .search-box {
+            margin-bottom: 20px;
+        }
+        /* Vehicle Details Modal Styles */
+        .vehicle-details-modal .modal-dialog {
+            max-width: 800px;
+            width: 90%;
+        }
+        .vehicle-details-section {
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        .vehicle-details-section h4 {
+            color: #435d7d;
+            margin-bottom: 15px;
+        }
+        .detail-row {
+            display: flex;
+            margin-bottom: 10px;
+        }
+        .detail-label {
+            font-weight: bold;
+            width: 200px;
+            color: #566787;
+        }
+        .detail-value {
+            flex: 1;
+        }
+        .vehicle-image {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 5px;
+        }
+        /* Make names look clickable */
+        .clickable-name {
+            color: #2196F3;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .clickable-name:hover {
+            text-decoration: underline;
+        }
+        .price-badge {
+            font-size: 14px;
+            padding: 5px 10px;
+            border-radius: 3px;
+            background-color:transparent;
+            color:#566787;
+            
+        }
+       .btn-group {
+    margin-left: 10px;
+}
+
+.btn-group .dropdown-toggle {
+    background-color: #4b7dbb;
+    color: white;
+    border: none;
+    padding: 7px 16px;
+    border-radius: 2px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    transition: background-color 0.3s;
+}
+
+.btn-group .dropdown-toggle:hover {
+    background-color: #354b6b;
+}
+
+.btn-group .dropdown-toggle i {
+    margin-right: 5px;
+}
+
+/* Dropdown Menu Styles */
+.btn-group .dropdown-menu {
+    min-width: 120px;
+    border-radius: 4px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    border: none;
+    padding: 0;
+}
+
+.btn-group .dropdown-menu li a {
+    padding: 8px 16px;
+    color: #566787;
+    display: block;
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+.btn-group .dropdown-menu li a:hover {
+    background-color: #f5f5f5;
+    color: #435d7d;
+}
+
+/* PDF Export Button Specific Styles */
+#exportPdfBtn {
+    color: #566787;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+}
+
+#exportPdfBtn:hover {
+    background-color: #f5f5f5;
+}
+
+#exportPdfBtn i {
+    margin-right: 8px;
+    color: #dc3545;
+}
+
+/* Caret Icon Adjustment */
+.btn-group .dropdown-toggle::after {
+    margin-left: 8px;
+    vertical-align: middle;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .btn-group {
+        margin-left: 0;
+        margin-top: 10px;
+        width: 100%;
+    }
+    
+    .btn-group .dropdown-toggle {
+        width: 100%;
+        justify-content: center;
+    }
+}
+ .search-filter-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    gap: 15px;
+}
+
+/* Search Input */
+.search-container {
+    position: relative;
+    flex: 1;
+    max-width: 400px;
+}
+
+.search-container .search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #999;
+    font-size: 16px;
+}
+
+.search-container .search-bar {
+    width: 100%;
+    padding: 10px 15px 10px 40px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    color: #333;
+    background-color: #fff;
+    transition: all 0.3s;
+}
+
+.search-container .search-bar:focus {
+    outline: none;
+    border-color: #4b7dbb;
+    box-shadow: 0 0 0 2px rgba(75, 125, 187, 0.2);
+}
+
+/* Filter Dropdown */
+.filter-dropdown {
+    position: relative;
+    min-width: 150px;
+    font: 50px;
+}
+
+.filter-dropdown i {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #999;
+    font-size: 10px;
+    z-index: 1;
+}
+
+.filter-dropdown select {
+    width: 100%;
+    padding: 10px 15px 10px 35px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 13px;
+    color: #333;
+    background-color: #fff;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.filter-dropdown select:focus {
+    outline: none;
+    border-color: #4b7dbb;
+    box-shadow: 0 0 0 2px rgba(75, 125, 187, 0.2);
+}
+
+/* Dropdown arrow */
+.filter-dropdown::after {
+    content: '\f078';
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 800;
+    position: absolute;
+    right: 12px;
+    top: 60%;
+    transform: translateY(-50%);
+    color: #999;
+    font-size: 15px;
+    pointer-events: none;
+}
+
+
+    </style>
+</head>
+<body>
+    <!-- Flash Messages -->
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+            <span>{{ message }}</span>
+            <button class="close-btn" onclick="this.parentElement.remove()">&times;</button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="container">
+        <div class="table-wrapper">
+            <div class="table-title">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <h2>Manage <b>Vehicles</b></h2>
+                    </div>
+                    <div class="col-sm-6">
+                        <a href="#addVehicleModal" class="btn btn-success" data-toggle="modal">
+                            <i class="material-icons">&#xE147;</i> <span>Add New Vehicle</span>
+                        </a>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                                <i class="material-icons">&#xE155;</i> <span>Export</span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="#" id="exportPdfBtn">PDF</a></li>
+                            </ul>
+                        </div>
+                    </div>     
+                </div>
+            </div>
+
+            
+ <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; gap: 20px;">
+    <!-- Search Bar (left side) -->
+    <div class="search-container">
+        <i class="fas fa-search search-icon"></i>
+        <input type="text" id="searchInput" class="form-control search-bar" placeholder="Search vehicles...">
+    </div>
+
+    <!-- Filter Dropdown (right side) -->
+    <div class="filter-dropdown">
+        <i class="fas fa-filter"></i>
+        <select id="filterSelect" class="form-control">
+            <option value="az">Sort A → Z</option>
+            <option value="za">Sort Z → A</option>
+            <option value="available">Available Only</option>
+            <option value="unavailable">Unavailable Only</option>
+        </select>
+    </div>
+</div>
+
+            <table class="table table-striped table-bordered table-hover table-sm">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Vehicle</th>
+                        <th>Year</th>
+                        <th>Color</th>
+                        <th>License Plate</th>
+                        <th>Fuel Type</th>
+                        <th>Seats</th>
+                        <th>Price (WD/WOD)</th>
+                        <th>Rental Count</th>
+                        <th>Availability</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="vehicleTable">
+                    {% for vehicle in vec %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>
+                            <a href="#" class="clickable-name" data-toggle="modal" data-target="#vehicleDetailsModal{{ vehicle.id }}">
+                                {{ vehicle.brand }} {{ vehicle.model }}
+                            </a>
+                        </td>
+                        <td>{{ vehicle.year }}</td>
+                        <td>{{ vehicle.color }}</td>
+                        <td>{{ vehicle.license_plate }}</td>
+                        <td>{{ vehicle.fuel_type }}</td>
+                        <td>{{ vehicle.seating_capacity }}</td>
+                        <td>
+                            <span class="price-badge">WD: PKR{{ vehicle.rental_price_wd }}</span><br>
+                            <span class="price-badge">WOD: PKR{{ vehicle.rental_price_wod }}</span>
+                        </td>
+                        <td>{{ vehicle.rental_count }}</td>
+                        <td>
+    <span class="badge {% if vehicle.is_available %}badge-success{% else %}badge-danger{% endif %}">
+        {% if vehicle.is_available %}Available only{% else %}Unavailable only{% endif %}
+    </span>
+</td>
+
+                        <td>
+                            <a href="#editVehicleModal{{ vehicle.id }}" class="edit" data-toggle="modal">
+                                <i class="material-icons" title="Edit">&#xE254;</i>
+                            </a>
+                            <a href="#deleteVehicleModal{{ vehicle.id }}" class="delete" data-toggle="modal">
+                                <i class="material-icons" title="Delete">&#xE872;</i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            
+            <div class="clearfix">
+                <div class="hint-text">Showing <b>{{ vec|length }}</b> vehicle(s)</div>
+                <ul class="pagination">
+                    <li class="page-item disabled"><a href="#">Previous</a></li>
+                    <li class="page-item active"><a href="#" class="page-link">1</a></li>
+                    <li class="page-item"><a href="#" class="page-link">Next</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Vehicle Modal -->
+    <div id="addVehicleModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form action="{% url 'add' %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="modal-header">                        
+                        <h4 class="modal-title">Add Vehicle</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                    <div class="modal-body"> 
+                                         
+                        <div class="form-group">
+                            <label>Brand</label>
+                            <input name='brand' type="text" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Model</label>
+                            <input name='model' type="text" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Year</label>
+                            <input name='year' type="text" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Color</label>
+                            <input name='color' type="text" class="form-control" required>
+                        </div>    
+                        <div class="form-group">
+                            <label>License Plate</label>
+                            <input name='license_plate' type="text" class="form-control" required>
+                        </div>    
+                        <div class="form-group">
+                            <label>Fuel Type</label>
+                            <input name='fuel_type' type="text" class="form-control" required>
+                        </div>    
+                        <div class="form-group">
+                            <label>Transmission</label>
+                            <input name='transmission' type="text" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Seating Capacity</label>
+                            <input name='seating_capacity' type="number" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Rental Price with driver</label>
+                            <input name='rental_price_wd' type="number" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Rental Price without driver</label>
+                            <input name='rental_price_wod' type="number" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Image</label>
+                            <input name='image' type="file" class="form-control" required>
+                        </div> 
+                        <div class="form-group">
+                            <label>Original Price</label>
+                            <input name='original_price' type="number" class="form-control" required>
+                        </div> 
+                        <div class="form-group">
+                            <label>Overtime Rate</label>
+                            <input name='overtime_rate' type="number" class="form-control" required>
+                        </div> 
+                        <div class="form-group">
+                            <label>Fuel Rate</label>
+                            <input name='fuel_rate' type="number" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Availability</label>
+                            <select name="is_available" class="form-control" required>
+                                <option value="True">Yes</option>
+                                <option value="False">No</option>
+                            </select>
+                        </div>            
+                    </div>
+                    <div class="modal-footer">
+                        <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                        <input type="submit" class="btn btn-success" value="Add">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit and Delete Vehicle Modals -->
+    {% for vehicle in vec %}
+    <!-- Edit Modal -->
+    <div id="editVehicleModal{{ vehicle.id }}" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form action="{% url 'update' vehicle.id %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="modal-header">                        
+                        <h4 class="modal-title">Edit Vehicle</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                        <div class="modal-body">
+                        <div class="form-group">
+                            <label>Brand</label>
+                            <input name="brand" value="{{ vehicle.brand }}" type="text" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Model</label>
+                            <input name="model" value="{{ vehicle.model }}" type="text" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Year</label>
+                            <input name="year" value="{{ vehicle.year }}" type="text" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Color</label>
+                            <input name="color" value="{{ vehicle.color }}" type="text" class="form-control" required>
+                        </div>    
+                        <div class="form-group">
+                            <label>License Plate</label>
+                            <input name="license_plate" value="{{ vehicle.license_plate }}" type="text" class="form-control" required>
+                        </div>    
+                        <div class="form-group">
+                            <label>Fuel Type</label>
+                            <input name="fuel_type" value="{{ vehicle.fuel_type }}" type="text" class="form-control" required>
+                        </div>   
+                        <div class="form-group">
+                            <label>Transmission</label>
+                            <input name="transmission" value="{{ vehicle.transmission}}" type="text" class="form-control" required>
+                        </div>    
+                        <div class="form-group">
+                            <label>Seating Capacity</label>
+                            <input name="seating_capacity" value="{{ vehicle.seating_capacity }}" type="number" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Rental Price with driver</label>
+                            <input name="rental_price_wd" value="{{ vehicle.rental_price_wd }}" type="number" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Rental Price without driver</label>
+                            <input name="rental_price_wod" value="{{ vehicle.rental_price_wod }}" type="number" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Image</label>
+                            <input name="image" type="file" class="form-control">
+                            {% if vehicle.image %}
+                                <small>Current: {{ vehicle.image.name }}</small>
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            <label>Original price</label>
+                            <input name="original_price" value="{{ vehicle.original_price }}" type="number" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Overtime Rate</label>
+                            <input name="overtime_rate" value="{{ vehicle.overtime_rate }}" type="number" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Fuel Rate</label>
+                            <input name="fuel_rate" value="{{ vehicle.fuel_rate }}" type="number" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Availability</label>
+                            <select name="is_available" class="form-control" required>
+                                <option value="True" {% if vehicle.is_available == True %} selected {% endif %}>Yes</option>
+                                <option value="False" {% if vehicle.is_available == False %} selected {% endif %}>No</option>
+                            </select>
+                        </div>
+                    </div>            
+                    <div class="modal-footer">
+                        <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                        <input type="submit" class="btn btn-info" value="Update">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Modal -->
+    <div id="deleteVehicleModal{{ vehicle.id }}" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form action="{% url 'delete' vehicle.id %}" method="post">
+                    {% csrf_token %}
+                    <div class="modal-header">                        
+                        <h4 class="modal-title">Delete Vehicle</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                    <div class="modal-body">                    
+                        <p>Are you sure you want to delete this vehicle?</p>
+                        <p class="text-warning"><small>{{ vehicle.brand }} {{ vehicle.model }} will be permanently deleted.</small></p>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                        <input type="submit" class="btn btn-danger" value="Delete">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Vehicle Details Modal -->
+    <div class="modal fade vehicle-details-modal" id="vehicleDetailsModal{{ vehicle.id }}" tabindex="-1" role="dialog" aria-labelledby="vehicleDetailsModalLabel{{ vehicle.id }}">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="vehicleDetailsModalLabel{{ vehicle.id }}">Vehicle Details - {{ vehicle.brand }} {{ vehicle.model }}</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="vehicle-details-section">
+                        {% if vehicle.image %}
+                            <img src="{{ vehicle.image.url }}" class="vehicle-image" alt="{{ vehicle.brand }} {{ vehicle.model }}">
+                        {% endif %}
+                        
+                        
+                        <div class="detail-row">
+                            <span class="detail-label">Brand:</span>
+                            <span class="detail-value">{{ vehicle.brand }}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Model:</span>
+                            <span class="detail-value">{{ vehicle.model }}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Year:</span>
+                            <span class="detail-value">{{ vehicle.year }}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Color:</span>
+                            <span class="detail-value">{{ vehicle.color }}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">License Plate:</span>
+                            <span class="detail-value">{{ vehicle.license_plate }}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Fuel Type:</span>
+                            <span class="detail-value">{{ vehicle.fuel_type }}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Transmission:</span>
+                            <span class="detail-value">{{ vehicle.transmission }}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Seating Capacity:</span>
+                            <span class="detail-value">{{ vehicle.seating_capacity }}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Availability:</span>
+                            <span class="detail-value">
+                                {% if vehicle.is_available %}
+                                    <span class="badge badge-success">Available only</span>
+                                {% else %}
+                                    <span class="badge badge-danger"> Unavailable only</span>
+                                {% endif %}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="vehicle-details-section">
+                        <h4>Pricing Information</h4>
+                        <div class="detail-row">
+                            <span class="detail-label">Rental Price (with driver):</span>
+                            <span class="detail-value">PKR{{ vehicle.rental_price_wd }}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Rental Price (without driver):</span>
+                            <span class="detail-value">PKR{{ vehicle.rental_price_wod }}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Original Price:</span>
+                            <span class="detail-value">PKR{{ vehicle.original_price }}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Overtime Rate:</span>
+                            <span class="detail-value">PKR{{ vehicle.overtime_rate }}/hr</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Fuel Rate:</span>
+                            <span class="detail-value">PKR{{ vehicle.fuel_rate }}/liter</span>
+                        </div>
+                    </div>
+
+                    <div class="vehicle-details-section">
+                        <h4>Rental History</h4>
+                        {% with rental_count=vehicle.rentalhistory_set.count %}
+                            <p>This vehicle has been rented {{ rental_count }} time{{ rental_count|pluralize }}</p>
+            
+                            {% if vehicle.rentalhistory_set.all %}
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>User</th>
+                                        <th>Rental Date</th>
+                                        <th>Return Date</th>
+                                        <th>Payment Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for rental in vehicle.rentalhistory_set.all %}
+                                    <tr>
+                                        <td>{{ rental.id }}</td>
+                                        <td>{{ rental.user.username }}</td>
+                                        <td>{{ rental.rental_date|date:"Y-m-d H:i" }}</td>
+                                        <td>{% if rental.return_date %}{{ rental.return_date|date:"Y-m-d H:i" }}{% else %}Not returned yet{% endif %}</td>
+                                        <td>{% if rental.payment_made %}Paid{% else %}Pending{% endif %}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                            {% else %}
+                            <p>No rental history found for this vehicle.</p>
+                            {% endif %}
+                        {% endwith %}
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+
+<!-- Scripts -->
+<script>
+$(document).ready(function(){
+function filterVehicles() {
+    const searchTerm = $('#searchInput').val().toLowerCase();
+    const sortOption = $('#filterSelect').val();
+    
+    $('#vehicleTable tr').each(function() {
+        const row = $(this);
+        const vehicleName = row.find('td:eq(1)').text().toLowerCase();
+        const availabilityBadge = row.find('td:eq(9) .badge');
+        
+        // Determine availability based on badge classes
+        const is_available = availabilityBadge.hasClass('badge-success');
+        
+        // Show/hide based on search term
+        const matchesSearch = vehicleName.includes(searchTerm);
+        
+        // Show/hide based on filter
+        let matchesFilter = true;
+        if (sortOption === 'available') {
+            matchesFilter = is_available;
+        } else if (sortOption === 'unavailable') {
+            matchesFilter = !is_available;
+        }
+        
+        if (matchesSearch && matchesFilter) {
+            row.show();
+        } else {
+            row.hide();
+        }
+    });
+    
+    // Sort the visible rows
+    if (sortOption === 'az' || sortOption === 'za') {
+        const rows = $('#vehicleTable tr:visible').get();
+        
+        rows.sort(function(a, b) {
+            const aText = $(a).find('td:eq(1)').text().toLowerCase();
+            const bText = $(b).find('td:eq(1)').text().toLowerCase();
+            
+            if (sortOption === 'az') {
+                return aText.localeCompare(bText);
+            } else {
+                return bText.localeCompare(aText);
+            }
+        });
+        
+        $.each(rows, function(index, row) {
+            $('#vehicleTable').append(row);
+        });
+    }
+    
+    // Update the count
+    const visibleCount = $('#vehicleTable tr:visible').length;
+    $('.hint-text').html(`Showing <b>${visibleCount}</b> vehicle(s)`);
+}
+
+    // Set up event handlers
+    $('#searchInput').on('input', filterVehicles);
+    $('#filterSelect').on('change', filterVehicles);
+    
+    // Export visible table data to PDF
+    document.getElementById('exportPdfBtn').addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        // Show loading state
+        const originalText = this.innerHTML;
+        this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating PDF...';
+        
+        // Get the table element
+        const table = document.querySelector('.table');
+        
+        // Options for html2canvas
+        const options = {
+            scale: 2, // Higher quality
+            logging: false,
+            useCORS: true,
+            scrollX: 0,
+            scrollY: 0,
+            windowWidth: document.documentElement.offsetWidth,
+            windowHeight: document.documentElement.offsetHeight
+        };
+        
+        // Use html2canvas to capture the table
+        html2canvas(table, options).then(canvas => {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF('p', 'pt', 'a4');
+            
+            // Add title
+            doc.setFontSize(18);
+            doc.text('Vehicle Management Report', 40, 40);
+            
+            // Add date
+            doc.setFontSize(10);
+            doc.text(`Generated on: ${new Date().toLocaleString()}`, 40, 60);
+            
+            // Add the table image
+            const imgData = canvas.toDataURL('image/png');
+            const imgWidth = doc.internal.pageSize.getWidth() - 80;
+            const imgHeight = (canvas.height * imgWidth) / canvas.width;
+            
+            doc.addImage(imgData, 'PNG', 40, 80, imgWidth, imgHeight);
+            
+            // Save the PDF
+            doc.save(`vehicles_report_${new Date().toISOString().slice(0,10)}.pdf`);
+            
+            // Restore button text
+            document.getElementById('exportPdfBtn').innerHTML = originalText;
+        }).catch(error => {
+            console.error('Error generating PDF:', error);
+            alert('Error generating PDF. Please try again.');
+            document.getElementById('exportPdfBtn').innerHTML = originalText;
+        });
+    });
+});
+</script>
+</script>
+</body>
+</html>
