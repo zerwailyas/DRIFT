@@ -1,0 +1,17 @@
+# Databases
+*.sqlite3
+*.db
+
+# Environments and Secrets
+.env
+.env.local
+venv/
+.venv/
+env/
+.vscode/
+
+# Python Cache and System Clutter
+__pycache__/
+*.pyc
+.DS_Store
+Thumbs.db
