@@ -1,90 +1,88 @@
-# Drift - Car Rental System
+# Drift
+## (Car Rental Management System)
 
-A full-featured car rental management system developed using Python, SQLite, Bootstrap, and Object-Oriented Programming (OOP) principles. Drift provides a seamless experience for both customers and administrators by offering vehicle management, rental services, payment processing, profile management, and rental history tracking.
+![Drift Landing Page](screenshots/landing.png)
+
+A modern car rental management system built with **Python, SQLite, Bootstrap, and Object-Oriented Programming (OOP)** principles. Drift provides a complete vehicle rental experience for customers while offering powerful management tools for administrators.
+
+## Overview:
+
+Drift streamlines the car rental process by allowing users to browse vehicles, manage bookings, make payments, and track rental history. Administrators can efficiently manage vehicles and monitor rental activities through a dedicated dashboard.
 
 ---
 
 ## Features
 
-### User Features
+### Customer Features:
 
-* User registration and login system
-* Browse available cars
-* Rent vehicles easily
-* Add and update account balance
-* Multiple payment methods:
+* User registration and secure login
+* Browse available vehicles
+* Rent cars with a simple booking process
+* Add and manage account balance
+* Multiple payment options:
 
-  * Balance Payment
+  * Wallet Balance
   * Card Payment
-  * PayPal Integration
-* Update user profile information
+  * PayPal
+* Update profile information
 * Upload profile picture
 * View personal rental history
 * Export rental history as PDF
-* Select pickup location using an interactive map and API integration
+* Interactive pickup location selection using map and API integration
 
-### Admin Features
+### Administrator Features:
 
-* Add new cars
-* Delete cars
-* Manage vehicle listings
-* View rental history of all users
-* Monitor system activities
-
----
-
-## Tech Stack
-
-**Frontend**
-
-* Bootstrap
-* HTML
-* CSS
-* JavaScript
-
-**Backend**
-
-* Python
-
-**Database**
-
-* SQLite
-
-**Concepts & Technologies**
-
-* Object-Oriented Programming (OOP)
-* CRUD Operations
-* API Integration
-* PDF Generation
-* Authentication & Authorization
-* File Upload Handling
-* Payment Processing
+* Add new vehicles
+* Delete vehicles
+* Manage vehicle inventory
+* View rental records of all users
+* Monitor rental activities and system usage
 
 ---
 
-<details>
-  <summary>📸 Click to view application screenshots</summary>
+## Technology Stack:
 
-  ### Landing Page
-  ![Landing Page](screenshots/landing.png)
+| Category     | Technologies                                    |
+| ------------ | ----------------------------------------------- |
+| Frontend     | HTML, CSS, Bootstrap, JavaScript                |
+| Backend      | Python                                          |
+| Database     | SQLite                                          |
+| Architecture | Object-Oriented Programming (OOP)               |
+| Features     | CRUD Operations, Authentication & Authorization |
+| Integrations | PayPal, Map APIs                                |
+| Utilities    | PDF Generation, File Upload Handling            |
 
-  ### Location Picker & Map Integration
-  ![Location Selection](screenshots/location_map.png)
+---
 
-  ### Vehicle Catalog
-  ![Car Listings](screenshots/car_listings.png)
+## Application Screenshots:
 
-  ### Admin Dashboard (Vehicle Management)
-  ![Admin Dashboard](screenshots/admin_dashboard.png)
+### Landing Page
 
-  ### Secure Checkout & Payment System
-  ![Payment Page](screenshots/payment.png)
+![Landing Page](screenshots/landing.png)
 
-  ### User Rental History
-  ![Rental Records](screenshots/rental_history.png)
-</details>
+### Location Picker & Map Integration
 
-## Project Structure
+![Location Selection](screenshots/location_map.png)
+
+### Vehicle Catalog
+
+![Car Listings](screenshots/car_listings.png)
+
+### Admin Dashboard
+
+![Admin Dashboard](screenshots/admin_dashboard.png)
+
+### Checkout & Payment System
+
+![Payment Page](screenshots/payment.png)
+
+### Rental History
+
+![Rental History](screenshots/rental_history.png)
+
+---
+
+## Project Structure:
 
 ```text
 Drift/
@@ -102,30 +100,37 @@ Drift/
 
 ---
 
-## Key Highlights
+## Key Highlights:
 
-* Designed using Object-Oriented Programming principles for modularity and maintainability.
-* Implemented secure authentication and role-based access control.
+* Developed using Object-Oriented Programming for scalability and maintainability.
+* Implemented role-based authentication for users and administrators.
 * Integrated multiple payment methods including PayPal.
-* Added map-based location selection using API integration.
-* Generated downloadable PDF reports for rental history.
-* Developed separate functionalities for users and administrators.
+* Added map-based location selection through API integration.
+* Generated downloadable PDF rental reports.
+* Designed separate workflows for customers and administrators.
+* Built a complete CRUD-based vehicle management system.
 
 ---
 
-## Future Improvements
+## Future Enhancements:
 
-* Email notifications and receipts
-* Advanced search and filtering
-* Car recommendations
-* Reservation scheduling
-* Admin analytics dashboard
-* Mobile responsive enhancements
+* Email notifications and booking receipts
+* Advanced vehicle search and filtering
+* Personalized vehicle recommendations
+* Reservation scheduling system
+* Analytics dashboard for administrators
+* Enhanced mobile responsiveness
+
+---
+
+## Contributors:
+
+* **Zerwa Ilyas**
+* **Javeria Iftikhar**
 
 ---
 
 ## Author:
 
 **Zerwa Ilyas**
-
-Computer Science Student | Python Developer | Backend & Database Enthusiast
+Computer Science Student • Python Developer • Backend & Database Enthusiast
