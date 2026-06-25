@@ -1,15 +1,12 @@
 # Drift
-## (Car Rental Management System)
 
-![Drift Landing Page](screenshots/landing.png)
+## (Car Rental Management System)
 
 A modern car rental management system built with **Python, SQLite, Bootstrap, and Object-Oriented Programming (OOP)** principles. Drift provides a complete vehicle rental experience for customers while offering powerful management tools for administrators.
 
 ## Overview:
 
 Drift streamlines the car rental process by allowing users to browse vehicles, manage bookings, make payments, and track rental history. Administrators can efficiently manage vehicles and monitor rental activities through a dedicated dashboard.
-
----
 
 ## Features
 
@@ -20,10 +17,11 @@ Drift streamlines the car rental process by allowing users to browse vehicles, m
 * Rent cars with a simple booking process
 * Add and manage account balance
 * Multiple payment options:
+* Wallet Balance
+* Card Payment
+* PayPal
 
-  * Wallet Balance
-  * Card Payment
-  * PayPal
+
 * Update profile information
 * Upload profile picture
 * View personal rental history
@@ -38,49 +36,31 @@ Drift streamlines the car rental process by allowing users to browse vehicles, m
 * View rental records of all users
 * Monitor rental activities and system usage
 
----
-
 ## Technology Stack:
 
-| Category     | Technologies                                    |
-| ------------ | ----------------------------------------------- |
-| Frontend     | HTML, CSS, Bootstrap, JavaScript                |
-| Backend      | Python                                          |
-| Database     | SQLite                                          |
-| Architecture | Object-Oriented Programming (OOP)               |
-| Features     | CRUD Operations, Authentication & Authorization |
-| Integrations | PayPal, Map APIs                                |
-| Utilities    | PDF Generation, File Upload Handling            |
-
----
+| Category | Technologies |
+| --- | --- |
+| Frontend | HTML, CSS, Bootstrap, JavaScript |
+| Backend | Python |
+| Database | SQLite |
+| Architecture | Object-Oriented Programming (OOP) |
+| Features | CRUD Operations, Authentication & Authorization |
+| Integrations | PayPal, Map APIs |
+| Utilities | PDF Generation, File Upload Handling |
 
 ## Application Screenshots:
 
 ### Landing Page
 
-![Landing Page](screenshots/landing.png)
-
 ### Location Picker & Map Integration
-
-![Location Selection](screenshots/location_map.png)
 
 ### Vehicle Catalog
 
-![Car Listings](screenshots/car_listings.png)
-
 ### Admin Dashboard
-
-![Admin Dashboard](screenshots/admin_dashboard.png)
 
 ### Checkout & Payment System
 
-![Payment Page](screenshots/payment.png)
-
 ### Rental History
-
-![Rental History](screenshots/rental_history.png)
-
----
 
 ## Project Structure:
 
@@ -96,9 +76,8 @@ Drift/
 ├── app.py
 ├── requirements.txt
 └── README.md
-```
 
----
+```
 
 ## Key Highlights:
 
@@ -110,8 +89,6 @@ Drift/
 * Designed separate workflows for customers and administrators.
 * Built a complete CRUD-based vehicle management system.
 
----
-
 ## Future Enhancements:
 
 * Email notifications and booking receipts
@@ -121,14 +98,10 @@ Drift/
 * Analytics dashboard for administrators
 * Enhanced mobile responsiveness
 
----
-
 ## Contributors:
 
 * **Zerwa Ilyas**
 * **Javeria Iftikhar**
-
----
 
 ## Author:
 
