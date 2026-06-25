@@ -62,29 +62,27 @@ A full-featured car rental management system developed using Python, SQLite, Boo
 
 ---
 
-## Screenshots:
+<details>
+  <summary>📸 Click to view application screenshots</summary>
 
-### Login Page
+  ### Landing Page
+  ![Landing Page](screenshots/landing.png)
 
-![Login](screenshots/login.png)
+  ### Location Picker & Map Integration
+  ![Location Selection](screenshots/location_map.png)
 
-### Dashboard
+  ### Vehicle Catalog
+  ![Car Listings](screenshots/car_listings.png)
 
-![Dashboard](screenshots/dashboard.png)
+  ### Admin Dashboard (Vehicle Management)
+  ![Admin Dashboard](screenshots/admin_dashboard.png)
 
-### Car Listings
+  ### Secure Checkout & Payment System
+  ![Payment Page](screenshots/payment.png)
 
-![Cars](screenshots/cars.png)
-
-### Payment System
-
-![Payment](screenshots/payment.png)
-
-### Rental History
-
-![History](screenshots/history.png)
-
----
+  ### User Rental History
+  ![Rental Records](screenshots/rental_history.png)
+</details>
 
 ## Project Structure
 
