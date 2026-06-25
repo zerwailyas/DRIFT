@@ -1,6 +1,7 @@
-# Drift
-
+# Drift 
 ## (Car Rental Management System)
+
+![Drift Landing Page](screenshots/landing.png)
 
 A modern car rental management system built with **Python, SQLite, Bootstrap, and Object-Oriented Programming (OOP)** principles. Drift provides a complete vehicle rental experience for customers while offering powerful management tools for administrators.
 
@@ -17,11 +18,10 @@ Drift streamlines the car rental process by allowing users to browse vehicles, m
 * Rent cars with a simple booking process
 * Add and manage account balance
 * Multiple payment options:
-* Wallet Balance
-* Card Payment
-* PayPal
 
-
+  * Wallet Balance
+  * Card Payment
+  * PayPal
 * Update profile information
 * Upload profile picture
 * View personal rental history
@@ -38,29 +38,39 @@ Drift streamlines the car rental process by allowing users to browse vehicles, m
 
 ## Technology Stack:
 
-| Category | Technologies |
-| --- | --- |
-| Frontend | HTML, CSS, Bootstrap, JavaScript |
-| Backend | Python |
-| Database | SQLite |
-| Architecture | Object-Oriented Programming (OOP) |
-| Features | CRUD Operations, Authentication & Authorization |
-| Integrations | PayPal, Map APIs |
-| Utilities | PDF Generation, File Upload Handling |
+| Category     | Technologies                                    |
+| ------------ | ----------------------------------------------- |
+| Frontend     | HTML, CSS, Bootstrap, JavaScript                |
+| Backend      | Python                                          |
+| Database     | SQLite                                          |
+| Architecture | Object-Oriented Programming (OOP)               |
+| Features     | CRUD Operations, Authentication & Authorization |
+| Integrations | PayPal, Map APIs                                |
+| Utilities    | PDF Generation, File Upload Handling            |
 
 ## Application Screenshots:
 
-### Landing Page
+<details>
+  <summary><b>Click to View Screenshots</b></summary>
 
-### Location Picker & Map Integration
+  ### Landing Page
+  ![Landing Page](screenshots/landing.png)
 
-### Vehicle Catalog
+  ### Location Picker & Map Integration
+  ![Location Selection](screenshots/location_map.png)
 
-### Admin Dashboard
+  ### Vehicle Catalog
+  ![Car Listings](screenshots/car_listings.png)
 
-### Checkout & Payment System
+  ### Admin Dashboard (Vehicle Management)
+  ![Admin Dashboard](screenshots/admin_dashboard.png)
 
-### Rental History
+  ### Secure Checkout & Payment System
+  ![Payment Page](screenshots/payment.png)
+
+  ### User Rental History
+  ![Rental Records](screenshots/rental_history.png)
+</details>
 
 ## Project Structure:
 
@@ -76,7 +86,6 @@ Drift/
 ├── app.py
 ├── requirements.txt
 └── README.md
-
 ```
 
 ## Key Highlights:
