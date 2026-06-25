@@ -1,15 +1,14 @@
-# Drift 
-## (Car Rental Management System)
+# Drift – Car Rental Management System
 
 ![Drift Landing Page](screenshots/landing.png)
 
-A modern car rental management system built with **Python, SQLite, Bootstrap, and Object-Oriented Programming (OOP)** principles. Drift provides a complete vehicle rental experience for customers while offering powerful management tools for administrators.
+A modern car rental management system built using **Python, Django, SQLite, Bootstrap, and Object-Oriented Programming (OOP)** principles. Drift provides a seamless vehicle rental experience for customers while offering administrators powerful tools to manage vehicles, rentals, and user activities.
 
 ## Overview:
 
-Drift streamlines the car rental process by allowing users to browse vehicles, manage bookings, make payments, and track rental history. Administrators can efficiently manage vehicles and monitor rental activities through a dedicated dashboard.
+Drift streamlines the car rental process by allowing users to browse available vehicles, rent cars, manage payments, select pickup locations, and track rental history. Administrators can efficiently manage the vehicle inventory and monitor rental activities through a dedicated dashboard.
 
-## Features
+## Features:
 
 ### Customer Features:
 
@@ -24,9 +23,9 @@ Drift streamlines the car rental process by allowing users to browse vehicles, m
   * PayPal
 * Update profile information
 * Upload profile picture
+* Interactive pickup location selection using map and API integration
 * View personal rental history
 * Export rental history as PDF
-* Interactive pickup location selection using map and API integration
 
 ### Administrator Features:
 
@@ -41,7 +40,7 @@ Drift streamlines the car rental process by allowing users to browse vehicles, m
 | Category     | Technologies                                    |
 | ------------ | ----------------------------------------------- |
 | Frontend     | HTML, CSS, Bootstrap, JavaScript                |
-| Backend      | Python                                          |
+| Backend      | Python, Django                                  |
 | Database     | SQLite                                          |
 | Architecture | Object-Oriented Programming (OOP)               |
 | Features     | CRUD Operations, Authentication & Authorization |
@@ -53,24 +52,86 @@ Drift streamlines the car rental process by allowing users to browse vehicles, m
 <details>
   <summary><b>Click to View Screenshots</b></summary>
 
-  ### Landing Page
-  ![Landing Page](screenshots/landing.png)
+  <br>
 
-  ### Location Picker & Map Integration
-  ![Location Selection](screenshots/location_map.png)
+### Landing Page
 
-  ### Vehicle Catalog
-  ![Car Listings](screenshots/car_listings.png)
+![Landing Page](screenshots/landing.png)
 
-  ### Admin Dashboard (Vehicle Management)
-  ![Admin Dashboard](screenshots/admin_dashboard.png)
+### Location Picker & Map Integration
 
-  ### Secure Checkout & Payment System
-  ![Payment Page](screenshots/payment.png)
+![Location Selection](screenshots/location_map.png)
 
-  ### User Rental History
-  ![Rental Records](screenshots/rental_history.png)
+### Vehicle Catalog
+
+![Car Listings](screenshots/car_listings.png)
+
+### Admin Dashboard
+
+![Admin Dashboard](screenshots/admin_dashboard.png)
+
+### Checkout & Payment System
+
+![Payment Page](screenshots/payment.png)
+
+### Rental History
+
+![Rental History](screenshots/rental_history.png)
+
 </details>
+
+## Installation & Setup:
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/zerwailyas/drift.git
+cd drift
+```
+
+### 2. Create a Virtual Environment
+
+```bash
+python -m venv venv
+```
+
+Activate the virtual environment:
+
+**Windows**
+
+```bash
+venv\Scripts\activate
+```
+
+**macOS / Linux**
+
+```bash
+source venv/bin/activate
+```
+
+### 3. Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### 4. Apply Database Migrations
+
+```bash
+python manage.py migrate
+```
+
+### 5. Run the Development Server
+
+```bash
+python manage.py runserver
+```
+
+### 6. Open in Browser
+
+```text
+http://127.0.0.1:8000
+```
 
 ## Project Structure:
 
@@ -83,19 +144,20 @@ Drift/
 ├── database/
 ├── models/
 ├── utils/
-├── app.py
+├── app/
+├── manage.py
 ├── requirements.txt
 └── README.md
 ```
 
 ## Key Highlights:
 
-* Developed using Object-Oriented Programming for scalability and maintainability.
-* Implemented role-based authentication for users and administrators.
+* Developed using Object-Oriented Programming principles for scalability and maintainability.
+* Implemented secure authentication and role-based access control.
 * Integrated multiple payment methods including PayPal.
-* Added map-based location selection through API integration.
+* Added map-based location selection using API integration.
 * Generated downloadable PDF rental reports.
-* Designed separate workflows for customers and administrators.
+* Designed separate functionalities for customers and administrators.
 * Built a complete CRUD-based vehicle management system.
 
 ## Future Enhancements:
@@ -115,4 +177,5 @@ Drift/
 ## Author:
 
 **Zerwa Ilyas**
+
 Computer Science Student • Python Developer • Backend & Database Enthusiast
